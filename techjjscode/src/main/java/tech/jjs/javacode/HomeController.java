@@ -35,5 +35,18 @@ public class HomeController {
 		
 		return "home";
 	}
+
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String indexhome(Locale locale, Model model) {
+
+		return "index";
+	}
+
+		
 	
 }
+
+
+
+
