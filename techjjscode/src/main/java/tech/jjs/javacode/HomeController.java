@@ -43,7 +43,25 @@ public class HomeController {
 		return "index";
 	}
 
-		
+	@RequestMapping(value = "/left-sidebar", method = RequestMethod.GET)
+	public String leftSidebar(Locale locale, Model model) {
+
+		return "left-sidebar";
+	}
+
+	@RequestMapping(value = "/no-sidebar", method = RequestMethod.GET)
+	public String noSidebar(Locale locale, Model model) {
+
+		return "no-sidebar";
+	}
+
+	@RequestMapping(value = "/right-sidebar", method = RequestMethod.GET)
+	public String rightSidebare(Locale locale, Model model) {
+
+		return "right-sidebar";
+	}
+
+	
 	
 }
 
