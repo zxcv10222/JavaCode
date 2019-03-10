@@ -22,8 +22,14 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
-			
 		</init-param>
+		<!-- 404 에러 페이지로 넘기지 않고 익셉션을 발생 -->
+	    <init-param>
+	    	<param-name>throwExceptionIfNoHandlerFound</param-name>
+	    	<param-value>true</param-value>
+	    </init-param>
+	    <!-- //404 에러 페이지로 넘기지 않고 익셉션을 발생 -->
+		
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
@@ -31,5 +37,23 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	
+	<!-- 한글 parameter를 위한 문자 인코딩 설정 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>
