@@ -27,7 +27,7 @@
 			<!-- Nav -->
 				<nav id="nav">
 					<ul>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="./home">Home</a></li>
 						<li>
 							<a href="#">Dropdown</a>
 							<ul>
@@ -45,9 +45,9 @@
 								<li><a href="#">Veroeros feugiat</a></li>
 							</ul>
 						</li>
-						<li><a href="left-sidebar.html">Left Sidebar</a></li>
-						<li><a href="right-sidebar.html">Right Sidebar</a></li>
-						<li class="current"><a href="no-sidebar.html">No Sidebar</a></li>
+						<li><a href="./left-sidebar">Left Sidebar</a></li>
+						<li><a href="./right-sidebar">Right Sidebar</a></li>
+						<li class="current"><a href="./no-sidebar">No Sidebar</a></li>
 					</ul>
 				</nav>
 
