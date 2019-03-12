@@ -1,16 +1,66 @@
-<!DOCTYPE HTML>
-<!--
-	TXT by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<%@ page session="true"%>
+
 <html>
 	<head>
+	
+	<script src="./resources/ckeditor/ckeditor.js"></script>
+	
+	<script src="./resources/js/jquery-3.1.1.min.js"></script>
+	<script>
+	
+	
+	/*jquery */
+	$(document).ready(function() {
+
+		
+		//버튼 누를시 이벤트
+		
+		//$('#search').on('click', search);
+		//날짜설정 함수
+		init();
+	});
+	
+	
+	/* 홈페이지 처음 시작할때 날짜설정 함수 */
+	function init() {
+		//첫날
+		var start_date = new Date();
+
+		//날짜 포맷
+		var f_start = dateToYYYYMMDD(start_date);
+
+		document.getElementById('s_insertdate').value = f_start;
+
+
+	};
+	
+	function dateToYYYYMMDD(date) {
+		function pad(num) {
+			num = num + '';
+			return num.length < 2 ? '0' + num : num;
+		}
+		return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-'
+				+ pad(date.getDate());
+	};
+	</script>
+	
+	
+	
 		<title>Right Sidebar - TXT by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="./resources/assets/css/main.css" />
+		
+		
 	</head>
+	
+	<input type="button" id="bt1" value="클래스 추가 1">
+	
 	<body class="is-preload">
 		<div id="page-wrapper">
 
@@ -64,6 +114,52 @@
 
 											<header>
 												<h2>Right Sidebar</h2>
+												<form action="write" method="post" id="writeForm" enctype="multipart/form-data" function>
+												<table >
+													<tr>
+														<th>제목 
+														<td><input type="text" id="s_title" name="s_title" size="48" >			
+													</tr>
+													<tr>
+														<th>내용
+														<td><textarea rows="22" cols="50" name="s_content" id="s_content" ></textarea>			
+													</tr>
+													<script>
+														CKEDITOR.replace("s_content");
+													
+													</script>
+													
+													<tr>
+														<th>태그
+														<td><input type="text" id="s_tag" name="s_tag" size="48" >		
+													</tr>
+													<tr>
+														<th>폴더 
+														<td><input type="text" id="s_folder" name="s_folder" size="48" >		
+													</tr>
+													<tr>
+														<th>url
+														<td><input type="text" id="s_url" name="s_url" size="48" >		
+													</tr>
+														<tr>
+															<th>파일첨부
+															<td><input type="file" name="upload" size="30" multiple="multiple">		
+														</tr>
+														<tr>
+															<th>s_insertdate
+														<td><input type="text" id="s_insertdate" name=s_insertdate size="48" >		
+													</tr>
+																		
+												</table>
+												<p align="center"><input type="submit" value="저장">
+												
+												
+												
+												
+												
+												
+												
+												
 												<p>Semper amet scelerisque metus faucibus morbi congue mattis</p>
 												<ul class="meta">
 													<li class="icon fa-clock-o">5 days ago</li>

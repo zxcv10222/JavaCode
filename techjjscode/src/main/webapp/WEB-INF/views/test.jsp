@@ -3,19 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script >
+<script>
 	function check() {
 		
 
-
-	s_boardNum
-	s_title
-	s_content
-	s_tag
-	s_fileName
-	s_insertDate
-	s_updateDate
-	s_custid
+	}
+	
 
 	
 	
@@ -29,7 +22,7 @@
 	<table>
 		<tr>
 			<td>s_boardNum
-			<td><input type="text" name="s_boardNum" id="s_boardNum">
+			<td><input type="text" name="s_boardNum" id="s_boardum">
 		</tr>
 		<tr>
 			<td>s_title

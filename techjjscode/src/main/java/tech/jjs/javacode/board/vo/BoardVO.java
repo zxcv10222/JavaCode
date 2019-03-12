@@ -1,19 +1,21 @@
 package tech.jjs.javacode.board.vo;
 
 public class BoardVO {
-	private String s_boardNum;
+	private int s_boardnum;
 	private String s_title;
 	private String s_content;
 	private String s_tag;
-	private String s_fileName;
-	private String s_insertDate;
-	private String s_updateDate;
+	private String s_originalfile;
+	private String s_savedfile;
+	private String s_insertdate;
+	private String s_folder;
 	private String s_custid;
-	public String getS_boardNum() {
-		return s_boardNum;
+	private String s_url;
+	public int getS_boardnum() {
+		return s_boardnum;
 	}
-	public void setS_boardNum(String s_boardNum) {
-		this.s_boardNum = s_boardNum;
+	public void setS_boardnum(int s_boardnum) {
+		this.s_boardnum = s_boardnum;
 	}
 	public String getS_title() {
 		return s_title;
@@ -33,23 +35,29 @@ public class BoardVO {
 	public void setS_tag(String s_tag) {
 		this.s_tag = s_tag;
 	}
-	public String getS_fileName() {
-		return s_fileName;
+	public String getS_originalfile() {
+		return s_originalfile;
 	}
-	public void setS_fileName(String s_fileName) {
-		this.s_fileName = s_fileName;
+	public void setS_originalfile(String s_originalfile) {
+		this.s_originalfile = s_originalfile;
 	}
-	public String getS_insertDate() {
-		return s_insertDate;
+	public String getS_savedfile() {
+		return s_savedfile;
 	}
-	public void setS_insertDate(String s_insertDate) {
-		this.s_insertDate = s_insertDate;
+	public void setS_savedfile(String s_savedfile) {
+		this.s_savedfile = s_savedfile;
 	}
-	public String getS_updateDate() {
-		return s_updateDate;
+	public String getS_insertdate() {
+		return s_insertdate;
 	}
-	public void setS_updateDate(String s_updateDate) {
-		this.s_updateDate = s_updateDate;
+	public void setS_insertdate(String s_insertdate) {
+		this.s_insertdate = s_insertdate;
+	}
+	public String getS_folder() {
+		return s_folder;
+	}
+	public void setS_folder(String s_folder) {
+		this.s_folder = s_folder;
 	}
 	public String getS_custid() {
 		return s_custid;
@@ -57,14 +65,19 @@ public class BoardVO {
 	public void setS_custid(String s_custid) {
 		this.s_custid = s_custid;
 	}
+	public String getS_url() {
+		return s_url;
+	}
+	public void setS_url(String s_url) {
+		this.s_url = s_url;
+	}
 	@Override
 	public String toString() {
-		return "boardVO [s_boardNum=" + s_boardNum + ", s_title=" + s_title + ", s_content=" + s_content + ", s_tag="
-				+ s_tag + ", s_fileName=" + s_fileName + ", s_insertDate=" + s_insertDate + ", s_updateDate="
-				+ s_updateDate + ", s_custid=" + s_custid + "]";
+		return "BoardVO [s_boardnum=" + s_boardnum + ", s_title=" + s_title + ", s_content=" + s_content + ", s_tag="
+				+ s_tag + ", s_originalfile=" + s_originalfile + ", s_savedfile=" + s_savedfile + ", s_insertdate="
+				+ s_insertdate + ", s_folder=" + s_folder + ", s_custid=" + s_custid + ", s_url=" + s_url + "]";
 	}
 
-	
-	
+
 	
 }
