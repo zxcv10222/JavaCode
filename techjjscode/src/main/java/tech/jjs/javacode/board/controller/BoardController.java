@@ -3,14 +3,16 @@ package tech.jjs.javacode.board.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +25,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -98,7 +101,11 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("searchText", searchText);
 			model.addAttribute("type", type);
-			return "/list";
+			
+			
+			
+			
+			return "/right-sidebar";
 		}
 
 		/**
@@ -107,7 +114,7 @@ public class BoardController {
 		@RequestMapping(value = "write", method = RequestMethod.GET)
 		public String WriteForm(HttpSession hs) {
 
-			return "/right-sidebar";
+			return "/right-sidebar3";
 		}
 
 		/**
@@ -115,11 +122,7 @@ public class BoardController {
 		 */
 		@RequestMapping(value = "write", method = RequestMethod.POST)
 		public String write(BoardVO board, MultipartFile upload, HttpSession hs) {
-			
-	
-	
-			
-			
+
 			logger.debug(board.toString());
 			
 			
@@ -134,8 +137,8 @@ public class BoardController {
 			 * board.setContent(board.getContent().replace("<", "&lt"));
 			 * board.setContent(board.getContent().replace(">", "&gt"));
 			 */
-			board.setS_title(board.getS_title().replace("<", "&lt"));
-			board.setS_title(board.getS_title().replace("<", "&gt"));
+			board.setTitle(board.getTitle().replace("<", "&lt"));
+			board.setTitle(board.getTitle().replace("<", "&gt"));
 
 			// 첨부파일이 있으면 서버의 하드디스크에 파일을 생성해서 복사
 			if (!upload.isEmpty()) {
@@ -143,39 +146,44 @@ public class BoardController {
 				String savedfile = FileService.saveFile(upload, uploadPath);
 
 				// 원래 파일명과 저장된 파일명을 board객체에 담아 DB에 저장
-				board.setS_originalfile(upload.getOriginalFilename());
-				board.setS_savedfile(savedfile);
+				board.setOriginalfile(upload.getOriginalFilename());
+				board.setSavedfile(savedfile);
 			}
 
-			//String s_custid = (String) hs.getAttribute("loginId");
+			//String id = (String) hs.getAttribute("loginId");
 
-			String s_content = board.getS_content();
-			s_content = s_content.replace("\r\n", "<br>");
-			board.setS_content(s_content);
-			board.setS_custid("test");
+			String content = board.getContent();
+			content = content.replace("\r\n", "<br>");
+			board.setContent(content);
+			board.setId("test");
 		
 			
 			dao.insert(board);
 
-			return "redirect:right-sidebar";
+			return "redirect:list";
 		}
 		
 		/**
 		 * 글읽기 보기
 		 */
-		@RequestMapping(value = "read", method = RequestMethod.GET)
-		public String read(int s_boardnum, Model model) {
+		
+	
+		
+		@ResponseBody
+		@RequestMapping(value = "read", method = RequestMethod.POST)
+		public HashMap<String, Object> read(int boardnum, HttpSession session) {
+			
+			BoardVO board = dao.read(boardnum);
+			
+			// 계시판용 리스트
+			HashMap<String, Object> result = new HashMap<>();
 
-			BoardVO board = dao.read(s_boardnum);
 			
 
-			if (board == null) {
-				return "redirect:list";
-			}
+			result.put("board", board);
+			//model.addAttribute("board", board);
 
-			model.addAttribute("board", board);
-
-			return "/read";
+			return result;
 		}
 
 		/**
@@ -186,14 +194,14 @@ public class BoardController {
 		 * @return null
 		 */
 		@RequestMapping(value = "download", method = RequestMethod.GET)
-		public String filedownload(int s_boardnum, HttpServletResponse response) {
+		public String filedownload(int boardnum, HttpServletResponse response) {
 			// 전달된 글번호로 글정보 검색
-			BoardVO board = dao.read(s_boardnum);
+			BoardVO board = dao.read(boardnum);
 			if (board == null) {
 				return "redirect:list";
 			}
 			// 원래의 파일명을 보여줄 준비 +인코딩
-			String originalfile = board.getS_originalfile();
+			String originalfile = board.getOriginalfile();
 			try {
 				response.setHeader("Content-Disposition",
 						"attachment;filename=" + URLEncoder.encode(originalfile, "UTF-8"));
@@ -201,7 +209,7 @@ public class BoardController {
 				e1.printStackTrace();
 			}
 
-			String savedFile = board.getS_savedfile();
+			String savedFile = board.getSavedfile();
 			String fullpath = uploadPath + "/" + savedFile;
 			// 서버에 저장된 파일을 읽어서 클라이언트로 전달할 출력 스트림으로 복사
 			FileInputStream in = null;
@@ -230,17 +238,17 @@ public class BoardController {
 		 * 글 삭제
 		 */
 		@RequestMapping(value = "delete", method = RequestMethod.GET)
-		public String delete(int s_boardnum, HttpSession session, RedirectAttributes rttr) {
+		public String delete(int boardnum, HttpSession session, RedirectAttributes rttr) {
 			// 세션에서 사용자 아이디 읽기
 			String loginId = (String) session.getAttribute("loginId");
-			BoardVO board = dao.read(s_boardnum);
+			BoardVO board = dao.read(boardnum);
 
-			if (!loginId.equals(board.getS_custid())) {
+			if (!loginId.equals(board.getId())) {
 				rttr.addFlashAttribute("errorMsg", "부적절한 접근 - 계정 틀림");
 				return "redirect:list";
 			}
 
-			String savedFile = board.getS_savedfile();
+			String savedFile = board.getSavedfile();
 			String fullpath = uploadPath + "/" + savedFile;
 			File f = new File(fullpath);
 			// 해당 글에 첨부된 파일이 있으면 삭제
@@ -250,7 +258,7 @@ public class BoardController {
 
 			// 글번호 로그인 아이디를 전달해서 DB에서 글 삭제
 
-			int result = dao.delete(s_boardnum);
+			int result = dao.delete(boardnum);
 			// 글목록 보기로 리다이렉트
 			return "redirect:list";
 		}
@@ -259,12 +267,12 @@ public class BoardController {
 		 * 글 수정 폼
 		 */
 		@RequestMapping(value = "edit", method = RequestMethod.GET)
-		public String edit(int s_boardnum, HttpSession session, RedirectAttributes rttr, Model model) {
+		public String edit(int boardnum, HttpSession session, RedirectAttributes rttr, Model model) {
 			// 세션에서 사용자 아이디 읽기
 			String loginId = (String) session.getAttribute("loginId");
-			BoardVO board = dao.read(s_boardnum);
+			BoardVO board = dao.read(boardnum);
 
-			if (!loginId.equals(board.getS_custid())) {
+			if (!loginId.equals(board.getId())) {
 				rttr.addFlashAttribute("errorMsg", "부적절한 접근 - 계정 틀림");
 				return "redirect:list";
 			}
@@ -281,9 +289,9 @@ public class BoardController {
 			logger.debug("초기:{}", board);
 			String id = (String) hs.getAttribute("loginId");
 
-			BoardVO board2 = dao.read(board.getS_boardnum());
+			BoardVO board2 = dao.read(board.getBoardnum());
 			if (!upload.isEmpty()) {
-				String dropfile = board2.getS_savedfile();
+				String dropfile = board2.getSavedfile();
 				String fullpath = uploadPath + "/" + dropfile;
 				// 기존 파일 삭제
 				FileService.deleteFile(fullpath);
@@ -291,22 +299,56 @@ public class BoardController {
 				String savedfile = FileService.saveFile(upload, uploadPath);
 
 				// 원래 파일명과 저장된 파일명을 board객체에 담아 DB에 저장
-				board.setS_originalfile(upload.getOriginalFilename());
-				board.setS_savedfile(savedfile);
+				board.setOriginalfile(upload.getOriginalFilename());
+				board.setSavedfile(savedfile);
 			}
-			board.setS_content(board.getS_content().replace("<", "&lt"));
-			board.setS_content(board.getS_content().replace(">", "&gt"));
-			board.setS_title(board.getS_title().replace("<", "&lt"));
-			board.setS_title(board.getS_title().replace("<", "&gt"));
+			board.setContent(board.getContent().replace("<", "&lt"));
+			board.setContent(board.getContent().replace(">", "&gt"));
+			board.setTitle(board.getTitle().replace("<", "&lt"));
+			board.setTitle(board.getTitle().replace("<", "&gt"));
 
-			String content = board.getS_content();
+			String content = board.getContent();
 			content = content.replace("\r\n", "<br>");
-			board.setS_content(content);
+			board.setContent(content);
 			logger.debug("셋팅완료{}", board);
 			dao.edit(board);
 
 			return "redirect:list";
 		}
 
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "image", method = RequestMethod.POST)
+		public void profileUpload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+			response.setContentType("text/html;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			// 업로드할 폴더 경로
+			String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
+			UUID uuid = UUID.randomUUID();
+
+			// 업로드할 파일 이름
+			String org_filename = file.getOriginalFilename();
+			String str_filename = uuid.toString() + org_filename;
+
+			System.out.println("원본 파일명 : " + org_filename);
+			System.out.println("저장할 파일명 : " + str_filename);
+
+			String filepath = realFolder + "\\" + str_filename;
+			System.out.println("파일경로 : " + filepath);
+	
+			File f = new File(filepath);
+			if (!f.exists()) {
+				f.mkdirs();
+			}
+			file.transferTo(f);
+			out.println("profileUpload//"+str_filename);
+			out.close();
+
+		}
+
+
+	
+		
 
 }

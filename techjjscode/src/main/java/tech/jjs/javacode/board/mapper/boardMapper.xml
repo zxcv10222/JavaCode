@@ -10,60 +10,64 @@
 	<insert id="insert" parameterType="Board">
 		insert into JAVACODE_BOARD
 		(
-		s_boardnum
-		,s_title
-		,s_content
-		,s_tag
-		<if test="s_originalfile !=null and s_savedfile !=null">
-			,s_originalfile
-			,s_savedfile
+		boardnum
+		,title
+		,content
+		,tag
+		<if test="originalfile !=null and savedfile !=null">
+			,originalfile
+			,savedfile
 		</if>
-		,s_insertdate
-		,s_folder
-		,s_custid
-		,s_url
+		,insertdate
+		,id
+		,url
+		,category
 		)
 		values
 		(
 		SEQ_JAVACODE_BOARD.nextval
-		,#{s_title}
-		,#{s_content}
-		,#{s_tag}
-		<if test="s_originalfile != null and s_savedfile !=null">
-			,#{s_originalfile}
-			,#{s_savedfile}
+		,#{title}
+		,#{content}
+		,#{tag}
+		<if test="originalfile != null and savedfile !=null">
+			,#{originalfile}
+			,#{savedfile}
 		</if>
-		,#{s_insertdate}
-		,#{s_folder}
-		,#{s_custid}
-		,#{s_url}	
+		,sysdate
+		,#{id}
+		,#{url}	
+		,#{category}
 		)
 	</insert>
+
+
 
 	<!-- 게시글 읽기 -->
 	<select id="read" parameterType="int" resultType="Board">
 		select
-		s_boardnum
-		,s_custid
-		,s_title
-		,s_content
-		,to_char(s_insertDate,'yyyy-mm-dd hh:mi') insertDate
-		,s_originalfile
-		,s_savedfile
-		from JAVACODE_BOARD where s_boardnum = #{s_boardnum}
+		boardnum
+		,title
+		,content
+		,tag
+		,originalfile
+		,savedfile
+		,to_char(insertDate,'yyyy-mm-dd hh:mi') insertdate
+		,id
+		,url
+		,category
+		from JAVACODE_BOARD where boardnum = #{boardnum}
 	</select>
 
 
 	<!-- 현재 페이지 목록(검색 필터링 후) -->
 	<select id="list" parameterType="hashmap" resultType="Board">
 		select
-		s_boardnum
-		,s_custid
-		,s_title
-		,s_content
-		,to_char(s_insertDate,'yyyy-mm-dd')
-		s_insertDate
-		,s_originalfile
+		boardnum
+		,title
+		,to_char(insertDate,'yyyy-mm-dd')
+		insertdate
+		
+		,id
 		from
 		JAVACODE_BOARD
 		<if test="type =='title' and searchText !=null">
@@ -80,7 +84,7 @@
 			where
 			id like '%' || #{searchText} || '%'
 		</if>
-		order by s_boardnum desc
+		order by boardnum desc
 	</select>
 
 
@@ -102,13 +106,13 @@
 				</if>
 			</if>
 		</where>
-		order by s_boardnum desc
+		order by boardnum desc
 	</select>
 
 	<!-- 글 삭제 -->
 	<delete id="delete" parameterType="int">
 		delete from JAVACODE_BOARD where
-		s_boardnum = #{s_boardnum}
+		boardnum = #{boardnum}
 	</delete>
 
 
@@ -117,12 +121,12 @@
 		update JAVACODE_BOARD set
 		title = #{title}
 		, content =#{content}
-		<if test="s_originalfile !=null and s_savedfile !=null">
-			, s_originalfile = #{s_originalfile}
-			, s_savedfile = #{s_savedfile}
+		<if test="originalfile !=null and savedfile !=null">
+			, originalfile = #{originalfile}
+			, savedfile = #{savedfile}
 		</if>
 		where
-		s_boardnum = #{s_boardnum}
+		boardnum = #{boardnum}
 	</update>
 
 

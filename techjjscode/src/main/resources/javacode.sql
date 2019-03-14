@@ -20,20 +20,19 @@ CREATE SEQUENCE SEQ_JAVACODE_BOARD;
 
 
 
-
 CREATE TABLE JAVACODE_BOARD
 (
-	s_boardnum number NOT NULL,
-	s_title varchar2(100) ,
-	s_content CLOB,
-	s_tag varchar2(100) ,
-	s_originalfile varchar2(100) ,
-	s_savedfile varchar2(100) ,
-	s_insertDate date,
-	s_folder varchar2(100),
-	s_url varchar2(100),
-	s_custid varchar2(20),
-	PRIMARY KEY (s_boardNum)
+	boardnum number NOT NULL,
+	title varchar2(100) ,
+	content CLOB,
+	tag varchar2(100) ,
+	originalfile varchar2(100) ,
+	savedfile varchar2(100) ,
+	insertdate date,
+	category varchar2(100),
+	url varchar2(100),
+	id varchar2(20),
+	PRIMARY KEY (boardnum)
 );
 
 

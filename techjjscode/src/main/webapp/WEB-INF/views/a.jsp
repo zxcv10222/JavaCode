@@ -31,8 +31,9 @@
 <link rel="stylesheet" href="../resources/css/board.css">
 <meta charset="UTF-8">
 <title>[게시판 글읽기]</title>
-<!-- ajax를 이용하여 리플 관련 처리 -->
+
 <script src="../resources/js/jquery-3.1.1.min.js"></script>
+<!-- ajax를 이용하여 리플 관련 처리 -->
 <script>
 	$(document).ready(function() {
 		$('#replyWrtie').on('click', replyWrite);

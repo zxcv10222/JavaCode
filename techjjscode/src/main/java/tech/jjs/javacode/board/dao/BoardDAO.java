@@ -41,10 +41,10 @@ public class BoardDAO {
 			return result;
 		}
 		
-		public BoardVO read(int s_boardNum) {
+		public BoardVO read(int boardnum) {
 
 			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
-			BoardVO result = mapper.read(s_boardNum);
+			BoardVO result = mapper.read(boardnum);
 			return result;
 		}
 		//게시글 리스트

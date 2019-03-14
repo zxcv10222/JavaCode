@@ -7,24 +7,69 @@
 
 <html>
 	<head>
-	
-	<script src="./resources/ckeditor/ckeditor.js"></script>
-	<script src="./resources/js/jquery-3.1.1.min.js"></script>
-	<script>
-	
-	
-	/*jquery */
-	$(document).ready(function() {
 
+<!--Jquery  -->
+	<script src="./resources/js/jquery-3.1.1.min.js"></script>
+<!--SumemerNote  -->
+	  <link href="./resources/summernote/summernote-lite.css" rel="stylesheet">
+	  <script src="./resources/summernote/summernote-lite.js"></script>
+
+</head>
+<body>
+  
+
+    <script>
+	$(function(){
 		
-		//버튼 누를시 이벤트
-		
-		$('#search').on('click', search);
-		//날짜설정 함수
-		init();
-	});
+		$('#summernote').summernote({
+			height: 600,
+			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
+			fontNamesIgnoreCheck : [ '맑은고딕' ],
+			focus: true,
+			
+			callbacks: {
+				onImageUpload: function(files, editor, welEditable) {
+		            for (var i = files.length - 1; i >= 0; i--) {
+		            	sendFile(files[i], this);
+		            }
+		        }
+			}
+			
+		});
+
+	})
 	
+	function sendFile(file, el) {
+		var form_data = new FormData();
+      	form_data.append('file', file);
+      	
+      	$.ajax({
+        	data: form_data,
+        	type: "POST",
+        	url: './image',
+        	cache: false,
+        	contentType: false,
+        	enctype: 'multipart/form-data',
+        	processData: false,
+        	success: function(url) {
+        		alert(url);
+                $(el).summernote('editor.insertImage', url);
+                $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+              }
+            });
+          }
+    
+
+</script>
+
+
+
+    
+        
+   
+
 	
+	<script>
 	/* 홈페이지 처음 시작할때 날짜설정 함수 */
 	function init() {
 		//첫날
@@ -33,7 +78,7 @@
 		//날짜 포맷
 		var f_start = dateToYYYYMMDD(start_date);
 
-		//document.getElementById('insertdate').value = f_start;
+		document.getElementById('insertdate').value = f_start;
 
 
 	};
@@ -46,52 +91,6 @@
 		return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-'
 				+ pad(date.getDate());
 	};
-	</script>
-	
-	<!-- ajax를 이용하여 글읽기 관련 처리 -->
-<script>
-	
-function funcA(boardnum){
-
-	
-	$.ajax({
-		url : 'read',
-		type : 'POST',
-		//서버로 보내는 parameter
-		data : {
-			boardnum : boardnum
-		},
-		dataType : 'json',
-		success : output,
-		error : function(e) {
-			alert("aa");
-			alert(JSON.stringify(e));
-		}
-	});
-	
-
-}
-function output(ob) {
-
-	var str ='<H3>';
-	
-
-
-	$.each(ob,function(i, board) {
-						
-		str += board.title
-
-					});
-	str += '</H3>';
-	$('#titleDiv').html(str);
-	
-}
-
-
-
-	
-
-	
 	</script>
 	<script>
 	function search() {
@@ -109,20 +108,19 @@ function output(ob) {
 </script>
 	
 	
-		<input type="hidden" name="loginId" value="${loginId }" id="loginId">
-	<input type="hidden" name="boardnum" value="${board.boardnum }">
-	
-	
-	
-	
 		<title>Right Sidebar - TXT by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="./resources/assets/css/main.css" />
 		
+	
+		
+
+		
+
 		
 	</head>
-	
+
 	
 	
 	<body class="is-preload">
@@ -178,100 +176,60 @@ function output(ob) {
 
 											<header>
 												<h2>Right Sidebar</h2>
-												<!-- 이하 게시판 글 목록 -->
-	<table>
-		<tr>
-			<td colspan="2">전체 : ${navi.totalRecordsCount} 페이지 :
-				${navi.currentPage } / ${navi.totalPageCount }
-			<td>
-				<%-- <c:if test="${loginId !=null}"> --%>
-					<td><input type="button" value="글쓰기"
-						onclick="location.href = 'write'">
-				<%-- </c:if> --%>
-	
-		</tr>
-		<tr>
-			<th>번호
-			<th>제목
-			<th>등록일
-			<th>첨부파일
-		</tr>
-<a href="javascript:funcA();void(0);">함수호출2</a>
-
-
-		<c:forEach var="board" items="${list }">
-			<tr>
-				<td>${board.boardnum }
-				
-				<td><a href="javascript:funcA(${board.boardnum});void(0);" >	
-				<%-- <td><a href="read?boardnum=${board.boardnum} "> --%>
-						${board.title }</a>
-				<td>${board.id }
-				<td>${board.insertdate }
-				<td align="center"><c:if test="${board.originalfile !=null}">
-						<a href="download?boardnum=${ board.boardnum}"> </a>
-					</c:if>
-			</tr>
-		</c:forEach>
-	</table>
-	<br>
-	<br>
-
-	<!-- 페이징 영역 -->
-	<p align="center">
-		<a href="javascript:formSubmit('${navi.currentPage -5}','${type}')">◁◁</a>
-		<a href="javascript:formSubmit('${navi.currentPage -1}','${type}')">◀</a>
-		<c:forEach var="n" begin="${ navi.startPageGroup}"
-			end="${navi.endPageGroup}">
-			<a href="javascript:formSubmit('${n}' , '${type}')">${n}</a>
-
-
-		</c:forEach>
-		<a href="javascript:formSubmit('${navi.currentPage +1}','${type}')">▶</a>
-		<a href="javascript:formSubmit('${navi.currentPage +5}','${type}')">▷▷</a>
-
-		<!-- 게시판 검색  폼영역 -->
-	<form action="list" onsubmit="search()" method="get" id="pagingForm">
-		<input type="hidden" name="type" id="type"> <input
-			type="hidden" name="page" id="page" value="1"> <br>
-		<p align="center">
-
-			<select id="option">
-
-				<c:choose>
-					<c:when test="${type == 'title'}">
-						<option value="title" selected="selected">제목</option>
-						<option value="titleContent">제목+내용</option>
-						<option value="id">작성자</option>
-					</c:when>
-					<c:when test="${type == 'titleContent'}">
-						<option value="title">제목</option>
-						<option value="titleContent" selected="selected">제목+내용</option>
-						<option value="id">작성자</option>
-					</c:when>
-					<c:when test="${type == 'id'}">
-						<option value="title">제목</option>
-						<option value="titleContent">제목+내용</option>
-						<option value="id" selected="selected">작성자</option>
-					</c:when>
-					<c:otherwise>
-						<option value="title" selected="selected">제목</option>
-						<option value="titleContent">제목+내용</option>
-						<option value="id">작성자</option>
-					</c:otherwise>
-				</c:choose>
-
-			</select> 
-
-			
-			<input type="text" name="searchText" value="${searchText}">
-			<input type="submit" value="검색">
-			
+												
+								<form method="post">
+	  <textarea id="summernote" name="editordata">testa</textarea>
 	</form>
+							
 												
-			
 												
-												<div id="titleDiv" name="titleDiv"></div>
+	
+												<form action="write" method="post" id="writeForm" enctype="multipart/form-data" function>
+												<table >
+													<tr>
+														<th>제목 
+														<td><input type="text" id="title" name="title" size="48" >			
+													</tr>
+													<tr>
+														<th>내용
+														<td><textarea rows="22" cols="50" name="content" id="content" ></textarea>			
+													</tr>
+
+													
+													
+
+													
+													<tr>
+														<th>태그
+														<td><input type="text" id="tag" name="tag" size="48" >		
+													</tr>
+													<tr>
+														<th>폴더 
+														<td><input type="text" id="category" name="category" size="48" >		
+													</tr>
+													<tr>
+														<th>url
+														<td><input type="text" id="url" name="url" size="48" >		
+													</tr>
+														<tr>
+															<th>파일첨부
+															<td><input type="file" name="upload" size="30" multiple="multiple">		
+														</tr>
+														<tr>
+															<th>s_insertdate
+														<td><input type="text" id="insertdate" name=insertdate size="48" >		
+													</tr>
+																		
+												</table>
+												<p align="center"><input type="submit" value="저장">
+												
+												
+												
+												
+												
+												
+												
+												
 												<p>Semper amet scelerisque metus faucibus morbi congue mattis</p>
 												<ul class="meta">
 													<li class="icon fa-clock-o">5 days ago</li>
@@ -348,34 +306,33 @@ function output(ob) {
 
 										<!-- Recent Posts -->
 											<section>
-												<h2 class="major"><span>공부<span></h2>
+												<h2 class="major"><span>Recent Posts</span></h2>
 												<ul class="divided">
 													<li>
 														<article class="box post-summary">
-															<h3><a href="#" name="category" value ="network" >네트워크</a></h3>
+															<h3><a href="#">A Subheading</a></h3>
+															<ul class="meta">
+																<li class="icon fa-clock-o">6 hours ago</li>
+																<li class="icon fa-comments"><a href="#">34</a></li>
+															</ul>
 														</article>
 													</li>
 													<li>
 														<article class="box post-summary">
-															<h3><a href="#" name="category" value ="server">서버</a></h3>
-															
+															<h3><a href="#">Another Subheading</a></h3>
+															<ul class="meta">
+																<li class="icon fa-clock-o">9 hours ago</li>
+																<li class="icon fa-comments"><a href="#">27</a></li>
+															</ul>
 														</article>
 													</li>
 													<li>
 														<article class="box post-summary">
-															<h3><a href="#" name="category" value ="development">개발</a></h3>
-															
-														</article>
-													</li>
-													
-													<li>
-														<article class="box post-summary">
-															<h3><a href="#" name="category" value ="security">세큐리티</a></h3>
-														</article>
-													</li>
-													<li>
-														<article class="box post-summary">
-															<h3><a href="#" name="category" value ="news">신문</a></h3>
+															<h3><a href="#">And Another</a></h3>
+															<ul class="meta">
+																<li class="icon fa-clock-o">Yesterday</li>
+																<li class="icon fa-comments"><a href="#">184</a></li>
+															</ul>
 														</article>
 													</li>
 												</ul>
@@ -528,14 +485,7 @@ function output(ob) {
 
 		</div>
 
-		<!-- Scripts -->
-			<script src="./resources/assets/js/jquery.min.js"></script>
-			<script src="./resources/assets/js/jquery.dropotron.min.js"></script>
-			<script src="./resources/assets/js/jquery.scrolly.min.js"></script>
-			<script src="./resources/assets/js/browser.min.js"></script>
-			<script src="./resources/assets/js/breakpoints.min.js"></script>
-			<script src="./resources/assets/js/util.js"></script>
-			<script src="./resources/assets/js/main.js"></script>
+
 
 	</body>
 </html>
