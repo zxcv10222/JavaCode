@@ -74,7 +74,7 @@
 
 	<!-- 페이징 영역 -->
 	<p align="center">
-		<a href="javascript:formSubmit('${navi.currentPage -5}','${type}')">◁◁</a>
+
 		<a href="javascript:formSubmit('${navi.currentPage -1}','${type}')">◀</a>
 		<c:forEach var="n" begin="${ navi.startPageGroup}"
 			end="${navi.endPageGroup}">
@@ -83,7 +83,6 @@
 
 		</c:forEach>
 		<a href="javascript:formSubmit('${navi.currentPage +1}','${type}')">▶</a>
-		<a href="javascript:formSubmit('${navi.currentPage +5}','${type}')">▷▷</a>
 
 		<!-- 게시판 검색  폼영역 -->
 	<form action="list" onsubmit="search()" method="get" id="pagingForm">

@@ -102,9 +102,7 @@ public class BoardController {
 			model.addAttribute("searchText", searchText);
 			model.addAttribute("type", type);
 			
-			
-			
-			
+
 			return "/right-sidebar";
 		}
 
@@ -114,7 +112,8 @@ public class BoardController {
 		@RequestMapping(value = "write", method = RequestMethod.GET)
 		public String WriteForm(HttpSession hs) {
 
-			return "/right-sidebar3";
+		
+			return "/writeForm";
 		}
 
 		/**
@@ -127,11 +126,11 @@ public class BoardController {
 			
 			
 			// MultiPartFile 객체의 정보 확인
-			logger.debug("파일명:{}", upload.getOriginalFilename());
-			logger.debug("파일크기:{}", upload.getSize());
-			logger.debug("이름:{}", upload.getName());
-			logger.debug("파일타입:{}", upload.getContentType());
-			logger.debug("파일확인:{}", upload.isEmpty());
+			//logger.debug("파일명:{}", upload.getOriginalFilename());
+			//logger.debug("파일크기:{}", upload.getSize());
+			//logger.debug("이름:{}", upload.getName());
+			//logger.debug("파일타입:{}", upload.getContentType());
+			//logger.debug("파일확인:{}", upload.isEmpty());
 
 			/*
 			 * board.setContent(board.getContent().replace("<", "&lt"));
@@ -150,12 +149,11 @@ public class BoardController {
 				board.setSavedfile(savedfile);
 			}
 
-			//String id = (String) hs.getAttribute("loginId");
 
 			String content = board.getContent();
 			content = content.replace("\r\n", "<br>");
 			board.setContent(content);
-			board.setId("test");
+	
 		
 			
 			dao.insert(board);
@@ -166,9 +164,7 @@ public class BoardController {
 		/**
 		 * 글읽기 보기
 		 */
-		
-	
-		
+
 		@ResponseBody
 		@RequestMapping(value = "read", method = RequestMethod.POST)
 		public HashMap<String, Object> read(int boardnum, HttpSession session) {
@@ -181,8 +177,7 @@ public class BoardController {
 			
 
 			result.put("board", board);
-			//model.addAttribute("board", board);
-
+			logger.debug("board:{}", board.toString());
 			return result;
 		}
 
@@ -239,14 +234,8 @@ public class BoardController {
 		 */
 		@RequestMapping(value = "delete", method = RequestMethod.GET)
 		public String delete(int boardnum, HttpSession session, RedirectAttributes rttr) {
-			// 세션에서 사용자 아이디 읽기
-			String loginId = (String) session.getAttribute("loginId");
+	
 			BoardVO board = dao.read(boardnum);
-
-			if (!loginId.equals(board.getId())) {
-				rttr.addFlashAttribute("errorMsg", "부적절한 접근 - 계정 틀림");
-				return "redirect:list";
-			}
 
 			String savedFile = board.getSavedfile();
 			String fullpath = uploadPath + "/" + savedFile;
@@ -268,17 +257,13 @@ public class BoardController {
 		 */
 		@RequestMapping(value = "edit", method = RequestMethod.GET)
 		public String edit(int boardnum, HttpSession session, RedirectAttributes rttr, Model model) {
-			// 세션에서 사용자 아이디 읽기
-			String loginId = (String) session.getAttribute("loginId");
+
 			BoardVO board = dao.read(boardnum);
 
-			if (!loginId.equals(board.getId())) {
-				rttr.addFlashAttribute("errorMsg", "부적절한 접근 - 계정 틀림");
-				return "redirect:list";
-			}
-			model.addAttribute("board", board);
 
-			return "/editForm";
+			model.addAttribute("board", board);
+			logger.debug("board:{}", board.toString());
+			return "/writeForm";
 		}
 
 		/**

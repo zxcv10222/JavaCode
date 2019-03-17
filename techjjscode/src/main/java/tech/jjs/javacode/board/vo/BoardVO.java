@@ -7,9 +7,7 @@ public class BoardVO {
 	private String tag;
 	private String originalfile;
 	private String savedfile;
-	private String insertdate;
-	private String id;
-	private String url;
+	private String updatedate;
 	private String category;
 	public int getBoardnum() {
 		return boardnum;
@@ -47,24 +45,13 @@ public class BoardVO {
 	public void setSavedfile(String savedfile) {
 		this.savedfile = savedfile;
 	}
-	public String getInsertdate() {
-		return insertdate;
+	public String getUpdatedate() {
+		return updatedate;
 	}
-	public void setInsertdate(String insertdate) {
-		this.insertdate = insertdate;
+	public void setUpdatedate(String updatedate) {
+		this.updatedate = updatedate;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+
 	public String getCategory() {
 		return category;
 	}
@@ -74,9 +61,10 @@ public class BoardVO {
 	@Override
 	public String toString() {
 		return "BoardVO [boardnum=" + boardnum + ", title=" + title + ", content=" + content + ", tag=" + tag
-				+ ", originalfile=" + originalfile + ", savedfile=" + savedfile + ", insertdate=" + insertdate + ", id="
-				+ id + ", url=" + url + ", category=" + category + "]";
+				+ ", originalfile=" + originalfile + ", savedfile=" + savedfile + ", updatedate=" + updatedate
+				+ ", category=" + category + "]";
 	}
-	
+
+
 
 }

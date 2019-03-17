@@ -23,15 +23,13 @@ CREATE SEQUENCE SEQ_JAVACODE_BOARD;
 CREATE TABLE JAVACODE_BOARD
 (
 	boardnum number NOT NULL,
-	title varchar2(100) ,
-	content CLOB,
+	title varchar2(100) NOT NULL,
+	content CLOB NOT NULL,
 	tag varchar2(100) ,
 	originalfile varchar2(100) ,
 	savedfile varchar2(100) ,
-	insertdate date,
+	updatedate date DEFAULT SYSDATE,
 	category varchar2(100),
-	url varchar2(100),
-	id varchar2(20),
 	PRIMARY KEY (boardnum)
 );
 
@@ -42,9 +40,8 @@ CREATE TABLE JAVACODE_BOARD
 insert into MSM_USER values ('aaa','aaa','이재민','jmlee825@naver.com','010-1234-5678','1986-08-25','서울 성북구', 0);
 
 
-insert into JAVACODE_BOARD values ( 2 ,'ID' ,'test' ,'test2' );
-insert into JAVACODE_BOARD values ( 1 ,'title' ,'content' ,'tag','orig','save',sysdate,sysdate,'url','id' );
-
+select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACODE_BOARD order by boardnum desc;
+select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACODE_BOARD where tag like 'windows' order by boardnum desc; 
 select * from JAVACODE_BOARD;
 commit;
 
