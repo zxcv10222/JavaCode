@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,13 +97,16 @@ public class BoardController {
 			PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
 			// 목록 읽기
 			ArrayList<BoardVO> list = dao.list(navi.getStartRecord(), countPerPage, type, searchText);
-
+			
+			
+			
+			
 			// JSP에서 출력할 값들을 위한 객체 생성
 			model.addAttribute("navi", navi);
 			model.addAttribute("list", list);
 			model.addAttribute("searchText", searchText);
 			model.addAttribute("type", type);
-			
+
 
 			return "/right-sidebar";
 		}
@@ -110,9 +115,11 @@ public class BoardController {
 		 * 글작성 폼
 		 */
 		@RequestMapping(value = "write", method = RequestMethod.GET)
-		public String WriteForm(HttpSession hs) {
+		public String WriteForm(HttpSession hs,Model model) {
 
-		
+
+	
+
 			return "/writeForm";
 		}
 
@@ -174,7 +181,6 @@ public class BoardController {
 			// 계시판용 리스트
 			HashMap<String, Object> result = new HashMap<>();
 
-			
 
 			result.put("board", board);
 			logger.debug("board:{}", board.toString());
@@ -260,9 +266,19 @@ public class BoardController {
 
 			BoardVO board = dao.read(boardnum);
 
-
+	
+	
 			model.addAttribute("board", board);
+			model.addAttribute("edit", "edit");
+			
+	
 			logger.debug("board:{}", board.toString());
+			
+			
+			
+			
+			
+			
 			return "/writeForm";
 		}
 
@@ -272,7 +288,7 @@ public class BoardController {
 		@RequestMapping(value = "edit", method = RequestMethod.POST)
 		public String edit(BoardVO board, HttpSession hs, Model model, MultipartFile upload) {
 			logger.debug("초기:{}", board);
-			String id = (String) hs.getAttribute("loginId");
+
 
 			BoardVO board2 = dao.read(board.getBoardnum());
 			if (!upload.isEmpty()) {
@@ -287,14 +303,14 @@ public class BoardController {
 				board.setOriginalfile(upload.getOriginalFilename());
 				board.setSavedfile(savedfile);
 			}
-			board.setContent(board.getContent().replace("<", "&lt"));
-			board.setContent(board.getContent().replace(">", "&gt"));
+			//board.setContent(board.getContent().replace("<", "&lt"));
+			//board.setContent(board.getContent().replace(">", "&gt"));
 			board.setTitle(board.getTitle().replace("<", "&lt"));
 			board.setTitle(board.getTitle().replace("<", "&gt"));
 
-			String content = board.getContent();
-			content = content.replace("\r\n", "<br>");
-			board.setContent(content);
+			//String content = board.getContent();
+			//content = content.replace("\r\n", "<br>");
+			//board.setContent(content);
 			logger.debug("셋팅완료{}", board);
 			dao.edit(board);
 
@@ -331,8 +347,62 @@ public class BoardController {
 			out.close();
 
 		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "autocomplete", method = RequestMethod.POST)
+		public HashMap<String, Object> autocomplete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+			HashMap<String, Object> result = new HashMap<>();
+			
+			String [] categorys =  dao.autocomplete();
+			
 
+			result.put("categorys", categorys);
+			
+			
+			
+			return result;
+			
+		}
+		@ResponseBody
+		@RequestMapping(value = "autocomplete2", method = RequestMethod.POST)
+		public void autocomplete2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+			HashMap<String, Object> result = new HashMap<>();
+			String word = request.getParameter("tag");
 
+		
+			String [] tags =  dao.autocomplete2(word);
+
+			
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			
+		    JSONArray list = new JSONArray();
+		    JSONObject object = null;
+		    
+		    
+		    for (String s : tags){
+		    	object = new JSONObject();
+		    	object.put("data", s);
+		    	list.add(object);
+		    }
+		    
+		    
+		    
+		         
+		    PrintWriter pw = response.getWriter();
+		    pw.print(list);
+		    pw.flush();
+		    pw.close();
+
+			
+			
+		
+			
+			
+		}
 	
 		
 

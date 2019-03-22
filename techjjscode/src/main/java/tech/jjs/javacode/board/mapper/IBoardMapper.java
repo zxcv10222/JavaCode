@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import tech.jjs.javacode.board.vo.BoardVO;
 
+
 public interface IBoardMapper {
 	// 등록
 	public int insert(BoardVO board);
@@ -22,4 +23,10 @@ public interface IBoardMapper {
 	public int delete(int s_boardNum);
 	// 수정
 	public int edit(BoardVO board);
+	//autocomplete
+	public String[] autocomplete();
+	//autocomplete2
+	public String[] autocomplete2(String word);
+	
+	
 }

@@ -33,7 +33,10 @@
 		else if	('${type}' == 'tag'){
 			$("#option option:eq(3)").attr("selected", "selected");
 		}
-	
+		
+		
+		
+		
 		
 	});
 	
@@ -161,7 +164,6 @@ function output(ob) {
 			<th>
 			<th>
 			
-			
 			<th>등록일
 			<th>첨부파일
 			<th>수정
@@ -174,18 +176,22 @@ function output(ob) {
 			<tr>
 		
 				
-				<td><a href="javascript:boardRead(${board.boardnum});void(0);" >	
-	
+				<td>${board.boardnum}<a href="javascript:boardRead(${board.boardnum});void(0);" >	
 						${board.title}</a>
 				<td>             
-			
+		
+			 
 				<td>
 				<td>
 				
-				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${board.updatedate }
+				<td>${board.updatedate }
 				<td align="center"><c:if test="${board.originalfile !=null}">
-						<a href="download?boardnum=${ board.boardnum}"> </a>
+						<a href="download?boardnum=${ board.boardnum}" >${board.originalfile}</a>
 					</c:if>
+					
+					
+				
+					
 				<td><a href="./edit?boardnum=${board.boardnum}" >수정</a>	
 				<td>삭제
 			</tr>
@@ -246,6 +252,8 @@ function output(ob) {
 
 						<!-- Recent Posts -->
 							<section>
+								<article class="box post-summary">
+
 								<h2 class="major"><a href="javascript:formSubmit('1','전체')">공부</a></h2>
 								<ul class="divided">
 									<li>

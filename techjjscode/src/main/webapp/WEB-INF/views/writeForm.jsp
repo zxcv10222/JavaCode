@@ -9,6 +9,11 @@
 	<head>
 	<!--Jquery  -->
 	<script src="./resources/js/jquery-3.1.1.min.js"></script>
+	
+	<!--Jquery Ui -->
+	<link href="./resources/js/jquery-ui.min.css" rel="stylesheet">
+	<script src="./resources/js/jquery-ui.min.js"></script>
+	
 	<!--SumemerNote  -->
 	  <link href="./resources/summernote/summernote-lite.css" rel="stylesheet">
 	  <script src="./resources/summernote/summernote-lite.js"></script>
@@ -19,11 +24,7 @@
 
 <script>
 $(document).ready(function() {
-
 });
-
-
-
 	$(function(){
 		
 		$('#content').summernote({
@@ -41,7 +42,6 @@ $(document).ready(function() {
 			}
 			
 		});
-
 	})
 	
 	function sendFile(file, el) {
@@ -66,11 +66,46 @@ $(document).ready(function() {
             });
           }
     
-
 </script>
 
 
+<script>
+$(function(){
+    $( "#tag" ).autocomplete({
 
+    	source : function( request, response ) {
+             $.ajax({
+                    type: 'post',
+                    url: "./autocomplete2",
+                    dataType: "json",
+                    //request.term = $("#autocomplete").val()
+                    data: { tag : $("#tag").val()},
+                    success: function(data) {
+              			console.log(data);
+                    	//서버에서 json 데이터 response 후 목록에 뿌려주기 위함
+                        response( 
+                            $.map(data, function(item) {
+                                return {
+                                  
+                                    value: item.data
+                                }
+                            })
+                        );
+                    }
+               });
+            },
+        //조회를 위한 최소글자수
+        minLength: 2,
+        select: function( event, ui ) {
+            // 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생
+        }
+    });
+})
+
+
+
+
+</script>
 
 
 	

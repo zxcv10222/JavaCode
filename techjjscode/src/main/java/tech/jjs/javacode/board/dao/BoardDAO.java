@@ -17,6 +17,7 @@ import tech.jjs.javacode.board.vo.BoardVO;
 
 
 
+
 @Repository
 public class BoardDAO {
 
@@ -88,4 +89,24 @@ public class BoardDAO {
 			int result = mapper.edit(board);
 			return result;
 		}
+		
+		public String [] autocomplete(){
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			
+			String [] result = mapper.autocomplete();
+			
+			
+			return result;
+
+		}
+		
+		public String [] autocomplete2(String tag){
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			
+			String [] result = mapper.autocomplete2(tag);
+			
+			
+			return result;
+
+		}		
 }
