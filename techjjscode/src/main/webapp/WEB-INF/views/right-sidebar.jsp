@@ -70,17 +70,24 @@ function output(ob) {
 
 	var str ='<H2>';
 	var str2='';
+	var str3='<h4 style="text-align:right">'
 
 
 	$.each(ob,function(i, board) {
 						
 		str += board.title
 		str2 += board.content
+		str3 += 'category : ' + board.category
+		str3 += '</h4>'
+		str3 += '<h4 style="text-align:right">'
+		str3 += 'tag : ' + board.tag
+		str3 += '</h4>'
 					});
 	str += '</H2>';
 
 	$('#titleDiv').html(str);
 	$('#ContentDiv').html(str2);
+	$('#categoryAndTagDiv').html(str3);
 	
 	
 }
@@ -111,6 +118,10 @@ function output(ob) {
 		document.getElementById('searchText').value = keyword;
 		page.value = 1;
 		form.submit();
+	}
+	
+	function delchk(){
+	       return confirm("삭제하시겠습니까?");
 	}
 	
 </script>
@@ -193,7 +204,7 @@ function output(ob) {
 				
 					
 				<td><a href="./edit?boardnum=${board.boardnum}" >수정</a>	
-				<td>삭제
+				<td><a href="./delete?boardnum=${board.boardnum}"  onclick="return delchk();">삭제</a>
 			</tr>
 		</c:forEach>
 	</table>
@@ -227,12 +238,12 @@ function output(ob) {
 			<input type="submit" value="검색">
 			
 	</form>
+			<div id="categoryAndTagDiv" name="categoryAndTagDiv"></div>									
+
 												
+			<div id="titleDiv" name="titleDiv"></div>
 			
-												
-				<div id="titleDiv" name="titleDiv"></div>
-				
-				<div id="ContentDiv" name="ContentDiv"></div>
+			<div id="ContentDiv" name="ContentDiv" style="width:160;height:20; overflow-x:hidden;overflow-y:hidden"></div>
 				
 
 				</header>

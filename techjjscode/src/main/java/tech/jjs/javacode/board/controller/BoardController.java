@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +50,7 @@ public class BoardController {
 	@RequestMapping(value = "home", method = RequestMethod.GET)
 	public String indexhome(Locale locale, Model model) {
 
-		return "home";
+		return "a";
 	}
 
 	@RequestMapping(value = "left-sidebar", method = RequestMethod.GET)
@@ -77,7 +79,7 @@ public class BoardController {
 		static final int countPerPage = 10;// 페이지당 글수
 		static final int pagePerGroup = 5; // 페이지 이동 그룹 당 표시할 페이지 수
 		static final String uploadPath = "/boardfile";// 파일 업로드 경로
-
+		static final String imageuploadPath = "/profileUpload";// image 파일 업로드 경로
 		/**
 		 * 게시글 리스트
 		 */
@@ -239,18 +241,57 @@ public class BoardController {
 		 * 글 삭제
 		 */
 		@RequestMapping(value = "delete", method = RequestMethod.GET)
-		public String delete(int boardnum, HttpSession session, RedirectAttributes rttr) {
+		public String delete(int boardnum, HttpSession session, RedirectAttributes rttr,HttpServletRequest request) {
 	
 			BoardVO board = dao.read(boardnum);
 
 			String savedFile = board.getSavedfile();
 			String fullpath = uploadPath + "/" + savedFile;
+			
+		
+			
+			String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
+			
+			String content = board.getContent();
+			logger.debug("content:{}",content);
+			
+			
+			try{ 
+  
+				Pattern ptn = Pattern.compile("//(.*?)png|//(.*?)jpg", Pattern.DOTALL);   
+				
+				
+
+				Matcher matcher = ptn.matcher(content); 
+			
+				while(matcher.find()){ 
+				
+				
+					String imageFileName = matcher.group(0).replaceAll("//", "");        
+		    
+				    File f2 = new File(realFolder +"\\" + imageFileName );
+					// 해당 글에 첨부된 파일이 있으면 삭제
+					if (f2.exists()) {
+						FileService.deleteFile(realFolder +"\\" + imageFileName );
+					}
+				    
+				    
+				} 
+				
+			
+			} catch(Exception e) { 
+				e.printStackTrace(); 
+			}
+
 			File f = new File(fullpath);
 			// 해당 글에 첨부된 파일이 있으면 삭제
 			if (f.exists()) {
 				FileService.deleteFile(fullpath);
 			}
 
+			
+		
+			
 			// 글번호 로그인 아이디를 전달해서 DB에서 글 삭제
 
 			int result = dao.delete(boardnum);
@@ -326,26 +367,34 @@ public class BoardController {
 			PrintWriter out = response.getWriter();
 			// 업로드할 폴더 경로
 			String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
-			UUID uuid = UUID.randomUUID();
+			//UUID uuid = UUID.randomUUID();
 
 			// 업로드할 파일 이름
 			String org_filename = file.getOriginalFilename();
-			String str_filename = uuid.toString() + org_filename;
+			//String str_filename = uuid.toString() + org_filename;
+			String savedfile = FileService.saveFile(file, realFolder);
+			
+			//System.out.println("원본 파일명 : " + org_filename);
+			//System.out.println("저장할 파일명 : " + str_filename);
 
-			System.out.println("원본 파일명 : " + org_filename);
-			System.out.println("저장할 파일명 : " + str_filename);
-
-			String filepath = realFolder + "\\" + str_filename;
-			System.out.println("파일경로 : " + filepath);
+			//String filepath = realFolder + "\\" + str_filename;
+			//System.out.println("파일경로 : " + filepath);
 	
-			File f = new File(filepath);
-			if (!f.exists()) {
-				f.mkdirs();
-			}
-			file.transferTo(f);
-			out.println("profileUpload//"+str_filename);
+			//File f = new File(filepath);
+			//if (!f.exists()) {
+			//	f.mkdirs();
+			//}
+			//file.transferTo(f);
+			//out.println("profileUpload//"+str_filename);
+			
+			out.println("profileUpload//" + savedfile);
+			
 			out.close();
 
+			
+			
+			
+			
 		}
 		
 		
@@ -388,19 +437,12 @@ public class BoardController {
 		    	object.put("data", s);
 		    	list.add(object);
 		    }
-		    
-		    
-		    
-		         
+     
 		    PrintWriter pw = response.getWriter();
 		    pw.print(list);
 		    pw.flush();
 		    pw.close();
-
-			
-			
-		
-			
+	
 			
 		}
 	

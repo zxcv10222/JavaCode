@@ -157,8 +157,6 @@
 		tag
 		from
 		JAVACODE_BOARD
-		
-		
 		where
 		tag like '%' || #{word} || '%'
 	

@@ -19,11 +19,13 @@
 	  <script src="./resources/summernote/summernote-lite.js"></script>
 	  
 
+  
 
 
 
 <script>
 $(document).ready(function() {
+	
 });
 	$(function(){
 		
@@ -102,15 +104,156 @@ $(function(){
     });
 })
 
+//테이블 내용 조회
+		$.ajax({
+			url : './autocomplete',
+			type : 'POST',
+			dataType : 'json',
+			success : output,
+			error : function(e) {
+			}
+		});
+	//category
+	function output(hm) {
+
+		var ob = hm.categorys;
+		var editcategory=$('#category').val();
+		
+		//테이블
+		var str = '<select id="categorySelect">';
+		
+		str += '<option value="" selected>'
+		for (var i = 0; i < ob.length; i++) {
+			
+			if(editcategory==ob[i]) {
+				str += '<option value="'+ob[i]+'">'	
+				+ ob[i]
+				+ '</option>'
+			}else{
+				str += '<option value="'+ob[i]+'">'
+				+ ob[i]
+				+ '</option>'
+			}		
+		}
+		str += '</select> ';
+		$('#categorydiv').html(str);
+		
+		$('#categorySelect').on('change',selectChange);
+	}
+	
+	function selectChange(){
+		//alert($('#category').val());
+		$('#category').val($('#categorySelect').val());
+		//alert($('#category').val());
+	}
+
+	
+	
+
+	function checkform(){
+		
+	
+	  if( document.getElementById("category").value == "" )
+	   {
+
+	     alert( "category 입력" );
+
+	     return false;
+
+	   }
+	  if( document.getElementById("tag").value == "" )
+	   {
+
+	     alert( "tag 입력" );
+
+	     return false;
+
+	   }
+	  if( document.getElementById("title").value == "" )
+	   {
+
+	     alert( "title 입력" );
+
+	     return false;
+
+	   }
+	  if( document.getElementById("content").value == "" )
+	   {
+
+	     alert( "content 입력" );
+
+	     return false;
+
+	   }		
+		
+		return true;
+	}
+
+		
+	function retrieveImageFromClipboardAsBlob(pasteEvent, callback){
+		if(pasteEvent.clipboardData == false){
+	        if(typeof(callback) == "function"){
+	            callback(undefined);
+	        }
+	    };
+
+	    var items = pasteEvent.clipboardData.items;
+
+	    if(items == undefined){
+	        if(typeof(callback) == "function"){
+	            callback(undefined);
+	        }
+	    };
+
+	    for (var i = 0; i < items.length; i++) {
+	        // Skip content if not image
+	        if (items[i].type.indexOf("image") == -1) continue;
+	        // Retrieve image on clipboard as blob
+	        var blob = items[i].getAsFile();
+
+	        if(typeof(callback) == "function"){
+	            callback(blob);
+	        }
+	    }
+	}
+
+	window.addEventListener("paste", function(e){
+		
+	    // Handle the event
+	    retrieveImageFromClipboardAsBlob(e, function(imageBlob){
+	        // If there's an image, display it in the canvas
+	        
+	        if(imageBlob){
+	        	sendFile2(imageBlob);
+   
+	        }
+	    });
+	}, false);
 
 
-
+	function sendFile2(file) {
+		var form_data = new FormData();
+      	form_data.append('file', file);
+      	
+      	$.ajax({
+        	data: form_data,
+        	type: "POST",
+        	url: './image',
+        	cache: false,
+        	contentType: false,
+        	enctype: 'multipart/form-data',
+        	processData: false,
+        	success: function(url) {
+         
+        		$('#content').summernote('editor.insertImage', url);         
+                $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+              }
+            });
+          }
+	
+	
+	
 </script>
-
-
-	
-	
-	
 	
 		<title>No Sidebar - TXT by HTML5 UP</title>
 		<meta charset="utf-8" />
@@ -129,6 +272,7 @@ $(function(){
 						</div>
 					</div>
 				</header>
+
 
 			<!-- Nav -->
 				<nav id="nav">
@@ -156,7 +300,7 @@ $(function(){
 						<li class="current"><a href="./no-sidebar">No Sidebar</a></li>
 					</ul>
 				</nav>
-
+<input type="text" id="testId">
 			<!-- Main -->
 				<section id="main">
 					<div class="container">
@@ -170,8 +314,12 @@ $(function(){
 	<table>
 	
 		<tr>
+			
 			<th>category 
-			<td><input type="text" id="category" name="category"  value="${board.category}">	
+			<td><div id="categorydiv"></div>
+			<input type="hidden" id="category" name="category"  value="${board.category}">
+			<%-- <td><input type="text" id="category" name="category"  value="${board.category}">
+ --%>				
 		</tr>
 		<tr>
 			<th>태그
@@ -191,9 +339,9 @@ $(function(){
 			<td><textarea id="content" name="content" value="">${board.content}</textarea>
 			</td>	
 		</tr>
-							
+				
 			</table>
-			<p align="center"><input type="submit" value="저장">
+			<p align="center"><input type="submit" value="저장" onclick="return checkform();">
 			<input type="button" value="뒤로가기" onclick="location.href = './list'">
 </form>	
 			
