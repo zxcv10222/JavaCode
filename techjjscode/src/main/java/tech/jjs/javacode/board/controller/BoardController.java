@@ -9,7 +9,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,11 +34,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tech.jjs.javacode.board.dao.BoardDAO;
 import tech.jjs.javacode.board.vo.BoardVO;
+import tech.jjs.javacode.board.vo.UserVO;
 import tech.jjs.javacode.util.FileService;
 import tech.jjs.javacode.util.PageNavigator;
 
 @Controller
 public class BoardController {
+	
+	
+	
+			
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	@Autowired
@@ -47,29 +51,48 @@ public class BoardController {
 	
 	
 	
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String loginForm(Locale locale, Model model) {
+
+		return "loginForm";
+	}
+
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public String login(Locale locale, Model model,UserVO user,HttpSession session) {
+		logger.debug("user{}", user);
+		UserVO result = dao.loginCheck(user.getId(), user.getPassword());
+		logger.debug("result{}", result);
+		
+		//로그인 실패
+		if(result==null){
+
+			
+			return "redirect:/login";
+		}
+			session.setAttribute("id", result.getId());
+		
+		
+	
+		return "redirect:/home";
+
+	}
+
+	//로그아웃
+	@RequestMapping(value="userLogout", method=RequestMethod.GET)
+	public String userLogout(HttpSession session){
+		session.removeAttribute("id");
+		
+		return "redirect:/home";
+	}
+	
+	
 	@RequestMapping(value = "home", method = RequestMethod.GET)
-	public String indexhome(Locale locale, Model model) {
+	public String home(Locale locale, Model model) {
 
-		return "a";
+		return "home";
 	}
 
-	@RequestMapping(value = "left-sidebar", method = RequestMethod.GET)
-	public String leftSidebar(Locale locale, Model model) {
 
-		return "left-sidebar";
-	}
-
-	@RequestMapping(value = "no-sidebar", method = RequestMethod.GET)
-	public String noSidebar(Locale locale, Model model) {
-
-		return "no-sidebar";
-	}
-
-	@RequestMapping(value = "right-sidebar", method = RequestMethod.GET)
-	public String rightSidebare(Locale locale, Model model) {
-
-		return "right-sidebar";
-	}
 
 	
 
@@ -119,9 +142,13 @@ public class BoardController {
 		@RequestMapping(value = "write", method = RequestMethod.GET)
 		public String WriteForm(HttpSession hs,Model model) {
 
-
-	
-
+			String id = (String)hs.getAttribute("id");	
+			//관리자권한만 등록 가능
+			if(!id.equals("zxcv1012")){
+				
+				return "redirect:home";
+			}
+			
 			return "/writeForm";
 		}
 
@@ -241,8 +268,17 @@ public class BoardController {
 		 * 글 삭제
 		 */
 		@RequestMapping(value = "delete", method = RequestMethod.GET)
-		public String delete(int boardnum, HttpSession session, RedirectAttributes rttr,HttpServletRequest request) {
-	
+		public String delete(int boardnum, HttpSession hs, RedirectAttributes rttr,HttpServletRequest request) {
+			
+			String id = (String)hs.getAttribute("id");	
+			//관리자권한만 등록 가능
+			if(!id.equals("zxcv1012")){
+				
+				return "redirect:home";
+			}
+			
+			
+			
 			BoardVO board = dao.read(boardnum);
 
 			String savedFile = board.getSavedfile();
@@ -303,8 +339,15 @@ public class BoardController {
 		 * 글 수정 폼
 		 */
 		@RequestMapping(value = "edit", method = RequestMethod.GET)
-		public String edit(int boardnum, HttpSession session, RedirectAttributes rttr, Model model) {
+		public String edit(int boardnum, HttpSession hs, RedirectAttributes rttr, Model model) {
 
+			String id = (String)hs.getAttribute("id");	
+			//관리자권한만 등록 가능
+			if(!id.equals("zxcv1012")){
+				
+				return "redirect:home";
+			}
+			
 			BoardVO board = dao.read(boardnum);
 
 	
@@ -314,11 +357,6 @@ public class BoardController {
 			
 	
 			logger.debug("board:{}", board.toString());
-			
-			
-			
-			
-			
 			
 			return "/writeForm";
 		}
@@ -390,10 +428,7 @@ public class BoardController {
 			out.println("profileUpload//" + savedfile);
 			
 			out.close();
-
-			
-			
-			
+	
 			
 		}
 		

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.session.RowBounds;
 
 import tech.jjs.javacode.board.vo.BoardVO;
+import tech.jjs.javacode.board.vo.UserVO;
 
 
 public interface IBoardMapper {
@@ -27,6 +28,7 @@ public interface IBoardMapper {
 	public String[] autocomplete();
 	//autocomplete2
 	public String[] autocomplete2(String word);
-	
+	//loginCheck
+	public UserVO loginCheck(String id, String password);
 	
 }

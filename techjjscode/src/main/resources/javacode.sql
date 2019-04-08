@@ -4,7 +4,7 @@
 
 DROP TABLE JAVACODE_BOARD CASCADE CONSTRAINTS;
 DROP TABLE JAVACODE_CATEGORY CASCADE CONSTRAINTS;
-
+DROP TABLE JAVACODE_USER CASCADE CONSTRAINTS;
 /* Drop Sequences */
 
 DROP SEQUENCE SEQ_JAVACODE_BOARD;
@@ -14,7 +14,12 @@ DROP SEQUENCE SEQ_JAVACODE_BOARD;
 
 CREATE SEQUENCE SEQ_JAVACODE_BOARD;
 
-
+CREATE TABLE JAVACODE_USER
+(
+	id varchar2(20) NOT NULL,
+	password varchar2(20) NOT NULL,
+	permission varchar2(10)
+);
 
 
 CREATE TABLE JAVACODE_BOARD
@@ -33,14 +38,15 @@ CREATE TABLE JAVACODE_BOARD
 
 
 
-/* 테스트 계정 */
-insert into MSM_USER values ('aaa','aaa','이재민','jmlee825@naver.com','010-1234-5678','1986-08-25','서울 성북구', 0);
 
 
 select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACODE_BOARD order by boardnum desc;
 select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACODE_BOARD where tag like 'windows' order by boardnum desc; 
 select * from JAVACODE_BOARD;
 select distinct category from JAVACODE_BOARD order by category desc;
+
+
+
 
 commit;
 

@@ -300,7 +300,7 @@ $(function(){
 						<li class="current"><a href="./no-sidebar">No Sidebar</a></li>
 					</ul>
 				</nav>
-<input type="text" id="testId">
+
 			<!-- Main -->
 				<section id="main">
 					<div class="container">

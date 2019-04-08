@@ -125,9 +125,11 @@ function output(ob) {
 	}
 	
 </script>
-	
+
+
 	<input type="hidden" name="boardnum" value="${board.boardnum }">
-	
+
+		
 	
 	
 	
@@ -250,11 +252,11 @@ function output(ob) {
 
 										
 
-										</article>
+						</article>
 
-								</div>
-							</div>
-							
+				</div>
+			</div>
+			
 							
 			<div class="col-3 col-12-medium">
 				<div class="sidebar">
@@ -300,7 +302,7 @@ function output(ob) {
 										</article>
 									</li>
 								</ul>
-								<a href="#" class="button alt">Arcives</a>
+								<a href="./userLogout" class="button alt">logout</a>
 							</section>
 
 						

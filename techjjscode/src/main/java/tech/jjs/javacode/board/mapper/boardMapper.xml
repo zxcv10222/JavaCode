@@ -159,7 +159,18 @@
 		JAVACODE_BOARD
 		where
 		tag like '%' || #{word} || '%'
-	
-			
+
 	</select>
+		<!-- loginCheck -->
+ 	<select id="loginCheck" parameterType="String" resultType="User" >
+		select
+		id,
+		permission
+		from
+		JAVACODE_USER
+		where
+		id=#{0} and password=#{1}
+
+	</select>
+	
 </mapper>

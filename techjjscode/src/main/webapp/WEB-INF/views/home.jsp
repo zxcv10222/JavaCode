@@ -1,9 +1,10 @@
-<!DOCTYPE HTML>
-<!--
-	TXT by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<%@ page session="true"%>
+
 <html>
 	<head>
 		<title>TXT by HTML5 UP</title>
@@ -18,8 +19,9 @@
 				<header id="header">
 					<div class="logo container">
 						<div>
-							<h1><a href="index.html" id="logo">TXT</a></h1>
-							<p>A responsive site template by HTML5 UP</p>
+						
+						
+							<p>현재 접속중인 ID : ${id} </p>
 						</div>
 					</div>
 				</header>
@@ -56,7 +58,7 @@
 					<div class="content">
 						<h2>Welcome to TXT by HTML5 UP</h2>
 						<p>A free responsive site template built on HTML5, CSS3, and some other stuff</p>
-						<a href="#main" class="button scrolly">Alright let's go</a>
+						<a href="./login" class="button scrolly">LOGIN</a>
 					</div>
 				</section>
 
@@ -69,10 +71,10 @@
 								<!-- Highlight -->
 									<section class="box highlight">
 										<ul class="special">
-											<li><a href="#" class="icon fa-search"><span class="label">Magnifier</span></a></li>
+											<li><a href="./list" class="icon fa-search"><span class="label">Magnifier</span></a></li>
 											<li><a href="#" class="icon fa-tablet"><span class="label">Tablet</span></a></li>
 											<li><a href="#" class="icon fa-flask"><span class="label">Flask</span></a></li>
-											<li><a href="#" class="icon fa-cog"><span class="label">Cog?</span></a></li>
+											<li><a href="./userLogout" class="icon fa-cog"><span class="label">Cog?</span></a></li>
 										</ul>
 										<header>
 											<h2>A random assortment of icons in circles</h2>

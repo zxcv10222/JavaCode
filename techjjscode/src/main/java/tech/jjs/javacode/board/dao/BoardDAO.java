@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import tech.jjs.javacode.board.mapper.IBoardMapper;
 import tech.jjs.javacode.board.vo.BoardVO;
+import tech.jjs.javacode.board.vo.UserVO;
 
 
 
@@ -104,6 +105,16 @@ public class BoardDAO {
 			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
 			
 			String [] result = mapper.autocomplete2(tag);
+			
+			
+			return result;
+
+		}
+		
+		public UserVO loginCheck(String id, String password){
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			
+			UserVO result = mapper.loginCheck(id,password);
 			
 			
 			return result;

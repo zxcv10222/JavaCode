@@ -6,7 +6,7 @@
  
 	 <typeAliases>
 		<typeAlias type="tech.jjs.javacode.board.vo.BoardVO" alias="Board" />
-
+		<typeAlias type="tech.jjs.javacode.board.vo.UserVO" alias="User" />
 	</typeAliases> 
 
 	<mappers>
