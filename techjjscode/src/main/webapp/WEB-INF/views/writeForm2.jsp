@@ -25,6 +25,8 @@
 
 <script>
 $(document).ready(function() {
+	$('#boardTypeSelect').on('change',selectChange);
+	
 	
 });
 	$(function(){
@@ -72,85 +74,12 @@ $(document).ready(function() {
 
 
 <script>
-$(function(){
-    $( "#tag" ).autocomplete({
 
-    	source : function( request, response ) {
-             $.ajax({
-                    type: 'post',
-                    url: "./autocomplete2",
-                    dataType: "json",
-                    //request.term = $("#autocomplete").val()
-                    data: { tag : $("#tag").val()},
-                    success: function(data) {
-              			console.log(data);
-                    	//서버에서 json 데이터 response 후 목록에 뿌려주기 위함
-                        response( 
-                            $.map(data, function(item) {
-                                return {
-                                  
-                                    value: item.data
-                                }
-                            })
-                        );
-                    }
-               });
-            },
-        //조회를 위한 최소글자수
-        minLength: 2,
-        select: function( event, ui ) {
-            // 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생
-        }
-    });
-})
 
-//테이블 내용 조회
-		$.ajax({
-			url : './autocomplete',
-			type : 'POST',
-			dataType : 'json',
-			success : output,
-			error : function(e) {
-			}
-		});
-	//category
-	function output(hm) {
-
-		var ob = hm.categorys;
-		var editcategory=$('#category').val();
-		var flag = $('#edit').val();
-		//테이블
-		var str = '<select id="categorySelect">';
-		
-		if (flag==""){
-			str += '<option value="" selected>'
-		}else{
-			str += '<option value="">'
-		}
-			
-		
-		for (var i = 0; i < ob.length; i++) {
-			
-			if(editcategory==ob[i]) {
-				str += '<option value="'+ob[i]+'" selected>'	
-				+ ob[i]
-				+ '</option>'
-			}else{
-				str += '<option value="'+ob[i]+'">'
-				+ ob[i]
-				+ '</option>'
-			}		
-		}
-		str += '</select> ';
-		$('#categorydiv').html(str);
-		
-		$('#categorySelect').on('change',selectChange);
-	}
-	
 	function selectChange(){
 		//alert($('#category').val());
-		$('#category').val($('#categorySelect').val());
-		//alert($('#category').val());
+		$('#boardType').val($('#boardTypeSelect').val());
+		//alert($('#boardType').val());
 	}
 
 	
@@ -159,10 +88,10 @@ $(function(){
 	function checkform(){
 		
 	
-	  if( document.getElementById("category").value == "" )
+	  if( document.getElementById("boardType").value == "" )
 	   {
 
-	     alert( "category 입력" );
+	     alert( "boardType" );
 
 	     return false;
 
@@ -170,7 +99,7 @@ $(function(){
 	  if( document.getElementById("tag").value == "" )
 	   {
 
-	     alert( "tag 입력" );
+	     alert( "tag " );
 
 	     return false;
 
@@ -178,7 +107,7 @@ $(function(){
 	  if( document.getElementById("title").value == "" )
 	   {
 
-	     alert( "title 입력" );
+	     alert( "title " );
 
 	     return false;
 
@@ -186,7 +115,7 @@ $(function(){
 	  if( document.getElementById("content").value == "" )
 	   {
 
-	     alert( "content 입력" );
+	     alert( "content " );
 
 	     return false;
 
@@ -313,56 +242,62 @@ $(function(){
 						<div class="row">
 							<div class="col-12">
 								<div class="content">
-			
+
 									<!-- Content -->
-									
-		<c:choose>
+			
+			<c:choose>
 
 		    <c:when test="${edit eq 'edit'}">
-		    	<form action="edit" method="post" enctype="multipart/form-data" >
+		    	<form action="edit2" method="post" enctype="multipart/form-data" >
 				<input type="hidden" id="edit" name="edit"  value="${edit}">
 				<input type="hidden" id="boardnum" name="boardnum"  value="${board.boardnum}">
+				
 		    </c:when>
-		 
+		 	
 		    <c:otherwise>
-		       <form action="write" method="post" enctype="multipart/form-data" >
+		       <form action="write2" method="post" enctype="multipart/form-data" >
 		    </c:otherwise>
 		 
 		</c:choose>
-					
-			
 	<table>
 	
 		<tr>
+			<input type="hidden" id="boardType" name="boardType"  value="${board.boardType}">
+			<th>boardType 
+			<td><select id="boardTypeSelect">
+				 <option value="Notice">Notice</option>
+				 <option value="info">info</option>
+				 <option value="Questions">Questions</option>
+			 </td></select>
 			
-			<th>category 
-			<td><div id="categorydiv"></div>
-			<input type="hidden" id="category" name="category"  value="${board.category}">
-			<%-- <td><input type="text" id="category" name="category"  value="${board.category}">
- --%>				
+			<c:if test="${edit eq 'edit'}">
+				<script>
+					$('#boardTypeSelect').val($('#boardType').val());
+				</script>
+			</c:if>	
 		</tr>
 		<tr>
-			<th>태그
-			<td><input type="text" id="tag" name="tag"  value="${board.tag}">		
+			<th>name
+			<td><input type="text" id="name" name="name"  value="${board.name}">		
 		</tr>
 
 		<tr>
-			<th>제목 
+			<th>title
 			<td><input type="text" id="title" name="title" value="${board.title}" >			
 		</tr>
 		<tr>
-			<th>첨부파일 
+			<th>file 
 			<td><input type="file" name="upload" size="30">			
 		</tr>
 		<tr>
-			<th>내용
-			<td><textarea id="content" name="content" value="">${board.content}</textarea>
+			<th>content
+			<td><textarea id="content" name="content" value="">${bcontent}</textarea>
 			</td>	
 		</tr>
 				
 			</table>
-			<p align="center"><input type="submit" value="저장" onclick="return checkform();">
-			<input type="button" value="뒤로가기" onclick="location.href = './list'">
+			<p align="center"><input type="submit" value="save" onclick="return checkform();">
+			<input type="button" value="back" onclick="location.href = './list2'">
 </form>	
 			
 								</div>

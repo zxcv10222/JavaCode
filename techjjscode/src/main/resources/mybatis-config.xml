@@ -6,6 +6,7 @@
  
 	 <typeAliases>
 		<typeAlias type="tech.jjs.javacode.board.vo.BoardVO" alias="Board" />
+		<typeAlias type="tech.jjs.javacode.board.vo.Board2VO" alias="Board2" />
 		<typeAlias type="tech.jjs.javacode.board.vo.UserVO" alias="User" />
 	</typeAliases> 
 

@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tech.jjs.javacode.board.dao.BoardDAO;
+import tech.jjs.javacode.board.vo.Board2VO;
 import tech.jjs.javacode.board.vo.BoardVO;
 import tech.jjs.javacode.board.vo.UserVO;
 import tech.jjs.javacode.util.FileService;
@@ -41,14 +42,17 @@ import tech.jjs.javacode.util.PageNavigator;
 @Controller
 public class BoardController {
 	
-	
-	
-			
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	@Autowired
 	BoardDAO dao;
 	
+	
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public String test(Locale locale, Model model) {
+
+		return "no-sidebar";
+	}
 	
 	
 	@RequestMapping(value = "login", method = RequestMethod.GET)
@@ -92,11 +96,6 @@ public class BoardController {
 		return "home";
 	}
 
-
-
-	
-
-
 	
 	// 게시판 관련 상수 선언
 		static final int countPerPage = 10;// 페이지당 글수
@@ -133,9 +132,34 @@ public class BoardController {
 			model.addAttribute("type", type);
 
 
-			return "/right-sidebar";
+			return "/koreanPage";
 		}
 
+		
+		
+		/**
+		 * 게시글 리스트
+		 */
+		@RequestMapping(value = "list2", method = RequestMethod.GET)
+		public String list2(Model model) {
+			
+
+			// 목록 읽기
+			ArrayList<Board2VO> list2 = dao.list2();
+			
+			
+			// JSP에서 출력할 값들을 위한 객체 생성
+			model.addAttribute("list2", list2);
+			
+			
+			
+
+
+			return "/japanesePage";
+		}
+		
+		
+		
 		/**
 		 * 글작성 폼
 		 */
@@ -198,6 +222,47 @@ public class BoardController {
 		}
 		
 		/**
+		 * 글작성 폼
+		 */
+		@RequestMapping(value = "write2", method = RequestMethod.GET)
+		public String WriteForm() {
+
+	
+			
+			return "/writeForm2";
+		}
+
+		/**
+		 * 글작성
+		 */
+		@RequestMapping(value = "write2", method = RequestMethod.POST)
+		public String write2(Board2VO board2, MultipartFile upload, HttpSession hs) {
+
+			logger.debug(board2.toString());
+			
+			
+			
+			// 첨부파일이 있으면 서버의 하드디스크에 파일을 생성해서 복사
+			if (!upload.isEmpty()) {
+
+				String savedfile = FileService.saveFile(upload, uploadPath);
+
+				// 원래 파일명과 저장된 파일명을 board객체에 담아 DB에 저장
+				board2.setOriginalfile(upload.getOriginalFilename());
+				board2.setSavedfile(savedfile);
+			}
+
+
+		
+			
+			dao.insert2(board2);
+
+			return "redirect:list2";
+		}
+		
+		
+		
+		/**
 		 * 글읽기 보기
 		 */
 
@@ -215,6 +280,26 @@ public class BoardController {
 			logger.debug("board:{}", board.toString());
 			return result;
 		}
+		
+		/**
+		 * 글읽기 보기
+		 */
+
+		@ResponseBody
+		@RequestMapping(value = "read2", method = RequestMethod.POST)
+		public HashMap<String, Object> read2(int boardnum, HttpSession session) {
+			
+			Board2VO board = dao.read2(boardnum);
+			
+			// 계시판용 리스트
+			HashMap<String, Object> result = new HashMap<>();
+
+
+			result.put("board", board);
+			logger.debug("board:{}", board.toString());
+			return result;
+		}
+
 
 		/**
 		 * 파일 다운로드
@@ -263,7 +348,53 @@ public class BoardController {
 
 			return null;
 		}
+		/**
+		 * 파일 다운로드
+		 * 
+		 * @param boardnum
+		 *            첨부된 파일의
+		 * @return null
+		 */
+		@RequestMapping(value = "download2", method = RequestMethod.GET)
+		public String filedownload2(int boardnum, HttpServletResponse response) {
+			// 전달된 글번호로 글정보 검색
+			Board2VO board = dao.read2(boardnum);
+			if (board == null) {
+				return "redirect:list";
+			}
+			// 원래의 파일명을 보여줄 준비 +인코딩
+			String originalfile = board.getOriginalfile();
+			try {
+				response.setHeader("Content-Disposition",
+						"attachment;filename=" + URLEncoder.encode(originalfile, "UTF-8"));
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
 
+			String savedFile = board.getSavedfile();
+			String fullpath = uploadPath + "/" + savedFile;
+			// 서버에 저장된 파일을 읽어서 클라이언트로 전달할 출력 스트림으로 복사
+			FileInputStream in = null;
+			ServletOutputStream out = null;
+			try {
+				in = new FileInputStream(fullpath);
+				out = response.getOutputStream();
+
+				FileCopyUtils.copy(in, out);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					in.close();
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			// 클라이언트로전달할 출력스트림으로 복사
+
+			return null;
+		}
 		/**
 		 * 글 삭제
 		 */
@@ -360,7 +491,26 @@ public class BoardController {
 			
 			return "/writeForm";
 		}
+		/**
+		 * 글 수정 폼
+		 */
+		@RequestMapping(value = "edit2", method = RequestMethod.GET)
+		public String edit2(int boardnum, HttpSession hs, RedirectAttributes rttr, Model model) {
 
+		
+			
+			Board2VO board = dao.read2(boardnum);
+
+	
+	
+			model.addAttribute("board", board);
+			model.addAttribute("edit", "edit");
+			
+	
+			logger.debug("board:{}", board.toString());
+			
+			return "/writeForm2";
+		}
 		/**
 		 * 글 수정
 		 */
@@ -394,6 +544,37 @@ public class BoardController {
 			dao.edit(board);
 
 			return "redirect:list";
+		}
+		/**
+		 * 글 수정
+		 */
+		@RequestMapping(value = "edit2", method = RequestMethod.POST)
+		public String edit2(Board2VO board, HttpSession hs, Model model, MultipartFile upload) {
+			logger.debug("초기:{}", board);
+
+
+			Board2VO board2 = dao.read2(board.getBoardnum());
+			if (!upload.isEmpty()) {
+				String dropfile = board2.getSavedfile();
+				String fullpath = uploadPath + "/" + dropfile;
+				// 기존 파일 삭제
+				FileService.deleteFile(fullpath);
+				// 새로운 파일 저장
+				String savedfile = FileService.saveFile(upload, uploadPath);
+
+				// 원래 파일명과 저장된 파일명을 board객체에 담아 DB에 저장
+				board.setOriginalfile(upload.getOriginalFilename());
+				board.setSavedfile(savedfile);
+			}
+
+			board.setTitle(board.getTitle().replace("<", "&lt"));
+			board.setTitle(board.getTitle().replace("<", "&gt"));
+
+
+			logger.debug("셋팅완료{}", board);
+			dao.edit2(board);
+
+			return "redirect:list2";
 		}
 
 		

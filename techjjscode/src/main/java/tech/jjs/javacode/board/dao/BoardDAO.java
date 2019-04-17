@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import tech.jjs.javacode.board.mapper.IBoardMapper;
+import tech.jjs.javacode.board.vo.Board2VO;
 import tech.jjs.javacode.board.vo.BoardVO;
 import tech.jjs.javacode.board.vo.UserVO;
 
@@ -43,12 +44,35 @@ public class BoardDAO {
 			return result;
 		}
 		
+		/**
+		 * 글저장
+		 * 
+		 * @paramcustomer 사용자가 입력한 개인정보
+		 * @return 저장성공은 1 , 실패는 0
+		 */
+		public int insert2(Board2VO board2) {
+
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			int result = mapper.insert2(board2);
+			return result;
+		}
+		
+		
+		
 		public BoardVO read(int boardnum) {
 
 			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
 			BoardVO result = mapper.read(boardnum);
 			return result;
 		}
+		
+		public Board2VO read2(int boardnum) {
+
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			Board2VO result = mapper.read2(boardnum);
+			return result;
+		}
+		
 		//게시글 리스트
 		public ArrayList<BoardVO> list(int startRecord ,int countPerPage ,String type,String searchText) {
 
@@ -63,6 +87,17 @@ public class BoardDAO {
 			
 			return list;
 		}
+		
+		//게시글 리스트
+		public ArrayList<Board2VO> list2() {
+
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			ArrayList<Board2VO> list2 = mapper.list2();
+			
+			return list2;
+		}
+		
+		
 		//전체 글 수 가져오기
 		public int getTotal(String type,String searchText){
 			
@@ -90,7 +125,13 @@ public class BoardDAO {
 			int result = mapper.edit(board);
 			return result;
 		}
-		
+		//글수정
+		public int edit2(Board2VO board) {
+
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			int result = mapper.edit2(board);
+			return result;
+		}
 		public String [] autocomplete(){
 			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
 			

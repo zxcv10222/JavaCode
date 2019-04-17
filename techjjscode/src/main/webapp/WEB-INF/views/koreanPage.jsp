@@ -240,128 +240,124 @@ function output(ob) {
 			<input type="submit" value="검색">
 			
 	</form>
-			<div id="categoryAndTagDiv" name="categoryAndTagDiv"></div>									
+		<div id="categoryAndTagDiv" name="categoryAndTagDiv"></div>									
 
-												
-			<div id="titleDiv" name="titleDiv"></div>
-			
-			<div id="ContentDiv" name="ContentDiv" style="width:160;height:20; overflow-x:hidden;overflow-y:hidden"></div>
+											
+		<div id="titleDiv" name="titleDiv"></div>
+		
+		<div id="ContentDiv" name="ContentDiv" style="width:160;height:20; overflow-x:hidden;overflow-y:hidden"></div>
 				
 
-				</header>
+			</header>
 
 										
 
-						</article>
+			</article>
 
-				</div>
-			</div>
+		</div>
+	</div>
 			
 							
-			<div class="col-3 col-12-medium">
-				<div class="sidebar">
+	<div class="col-3 col-12-medium">
+		<div class="sidebar">
 
-					<!-- Sidebar -->
+			<!-- Sidebar -->
 
-						<!-- Recent Posts -->
-							<section>
+				<!-- Recent Posts -->
+					<section>
+						<article class="box post-summary">
+
+						<h2 class="major"><a href="javascript:formSubmit('1','전체')">공부</a></h2>
+						<ul class="divided">
+							<li>
 								<article class="box post-summary">
-
-								<h2 class="major"><a href="javascript:formSubmit('1','전체')">공부</a></h2>
-								<ul class="divided">
-									<li>
-										<article class="box post-summary">
-											<h3><a href="javascript:formSubmit2('네트워크')" >네트워크</a></h3>
-											<h4><a href="javascript:formSubmit2('스위치')"  >스위치</a></h2>
-											<h4><a href="javascript:formSubmit2('라우터')">라우터</a></h2>
-										</article>
-									</li>
-									<li>
-										<article class="box post-summary">
-											<h3><a href="javascript:formSubmit2('서버')">서버</a></h3>
-											<h4><a href="javascript:formSubmit2('윈도우')" >윈도우</a></h2>
-											<h4><a href="javascript:formSubmit2('리눅스')"  >리눅스</a></h2>
-										</article>
-									</li>
-									<li>
-										<article class="box post-summary">
-											<h3><a href="javascript:formSubmit2('개발')" >개발</a></h3>
-											<h4><a href="javascript:formSubmit2('자바')">자바</a></h2>
-											<h4><a href="javascript:formSubmit2('VBA')">VBA</a></h2>
-										</article>
-									</li>
-									
-									<li>
-										<article class="box post-summary">
-											<h3><a href="#" name="category" value ="세큐리티">세큐리티</a></h3>
-										</article>
-									</li>
-									<li>
-										<article class="box post-summary">
-											<h3><a href="#" name="category" value ="신문">신문</a></h3>
-										</article>
-									</li>
-								</ul>
-								<a href="./userLogout" class="button alt">logout</a>
-							</section>
-
-						
+									<h3><a href="javascript:formSubmit2('네트워크')" >네트워크</a></h3>
+									<h4><a href="javascript:formSubmit2('스위치')"  >스위치</a></h2>
+									<h4><a href="javascript:formSubmit2('라우터')">라우터</a></h2>
+								</article>
+							</li>
+							<li>
+								<article class="box post-summary">
+									<h3><a href="javascript:formSubmit2('서버')">서버</a></h3>
+									<h4><a href="javascript:formSubmit2('윈도우')" >윈도우</a></h2>
+									<h4><a href="javascript:formSubmit2('리눅스')"  >리눅스</a></h2>
+								</article>
+							</li>
+							<li>
+								<article class="box post-summary">
+									<h3><a href="javascript:formSubmit2('개발')" >개발</a></h3>
+									<h4><a href="javascript:formSubmit2('자바')">자바</a></h2>
+									<h4><a href="javascript:formSubmit2('VBA')">VBA</a></h2>
+								</article>
+							</li>
 							
+							<li>
+								<article class="box post-summary">
+									<h3><a href="#" name="category" value ="세큐리티">세큐리티</a></h3>
+								</article>
+							</li>
+							<li>
+								<article class="box post-summary">
+									<h3><a href="#" name="category" value ="신문">신문</a></h3>
+								</article>
+							</li>
+						</ul>
+						<a href="./userLogout" class="button alt">logout</a>
 					</section>
+			</section>
 
 			</div>
 		</div>
 	</div>
 </section>
 
-			<!-- Footer -->
-				<footer id="footer">
-					<div class="container">
-						<div class="row gtr-200">
-							<div class="col-12">
+	<!-- Footer -->
+		<footer id="footer">
+			<div class="container">
+				<div class="row gtr-200">
+					<div class="col-12">
 
-								<!-- About -->
-									<section>
-										<h2 class="major"><span>What's this about?</span></h2>
-										<p>
-											This is <strong>TXT</strong>, yet another free responsive site template designed by
-											<a href="http://twitter.com/ajlkn">AJ</a> for <a href="http://html5up.net">HTML5 UP</a>. It's released under the
-											<a href="http://html5up.net/license/">Creative Commons Attribution</a> license so feel free to use it for
-											whatever you're working on (personal or commercial), just be sure to give us credit for the design.
-											That's basically it :)
-										</p>
-									</section>
-
-							</div>
-							<div class="col-12">
-
-								<!-- Contact -->
-									<section>
-										<h2 class="major"><span>Get in touch</span></h2>
-										<ul class="contact">
-											<li><a class="icon fa-facebook" href="#"><span class="label">Facebook</span></a></li>
-											<li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
-											<li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
-											<li><a class="icon fa-dribbble" href="#"><span class="label">Dribbble</span></a></li>
-											<li><a class="icon fa-linkedin" href="#"><span class="label">LinkedIn</span></a></li>
-										</ul>
-									</section>
-
-							</div>
-						</div>
-
-						<!-- Copyright -->
-							<div id="copyright">
-								<ul class="menu">
-									<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-								</ul>
-							</div>
+						<!-- About -->
+							<section>
+								<h2 class="major"><span>What's this about?</span></h2>
+								<p>
+									This is <strong>TXT</strong>, yet another free responsive site template designed by
+									<a href="http://twitter.com/ajlkn">AJ</a> for <a href="http://html5up.net">HTML5 UP</a>. It's released under the
+									<a href="http://html5up.net/license/">Creative Commons Attribution</a> license so feel free to use it for
+									whatever you're working on (personal or commercial), just be sure to give us credit for the design.
+									That's basically it :)
+								</p>
+							</section>
 
 					</div>
-				</footer>
+					<div class="col-12">
 
-		</div>
+						<!-- Contact -->
+							<section>
+								<h2 class="major"><span>Get in touch</span></h2>
+								<ul class="contact">
+									<li><a class="icon fa-facebook" href="#"><span class="label">Facebook</span></a></li>
+									<li><a class="icon fa-twitter" href="#"><span class="label">Twitter</span></a></li>
+									<li><a class="icon fa-instagram" href="#"><span class="label">Instagram</span></a></li>
+									<li><a class="icon fa-dribbble" href="#"><span class="label">Dribbble</span></a></li>
+									<li><a class="icon fa-linkedin" href="#"><span class="label">LinkedIn</span></a></li>
+								</ul>
+							</section>
 
+					</div>
+				</div>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul class="menu">
+							<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+
+			</div>
+		</footer>
+	
+	</div>
 
 	</body>
 </html>
