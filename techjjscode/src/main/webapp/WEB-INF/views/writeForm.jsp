@@ -356,7 +356,7 @@ $(function(){
 		</tr>
 		<tr>
 			<th>내용
-			<td><textarea id="content" name="content" value="">${board.content}</textarea>
+			<td><textarea id="content" name="content" >${board.content}</textarea>
 			</td>	
 		</tr>
 				

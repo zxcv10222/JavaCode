@@ -96,10 +96,10 @@ $(document).ready(function() {
 	     return false;
 
 	   }
-	  if( document.getElementById("tag").value == "" )
+	  if( document.getElementById("name").value == "" )
 	   {
 
-	     alert( "tag " );
+	     alert( "name " );
 
 	     return false;
 
@@ -262,9 +262,11 @@ $(document).ready(function() {
 	<table>
 	
 		<tr>
+	
 			<input type="hidden" id="boardType" name="boardType"  value="${board.boardType}">
 			<th>boardType 
 			<td><select id="boardTypeSelect">
+				 <option ></option>
 				 <option value="Notice">Notice</option>
 				 <option value="info">info</option>
 				 <option value="Questions">Questions</option>
@@ -291,7 +293,7 @@ $(document).ready(function() {
 		</tr>
 		<tr>
 			<th>content
-			<td><textarea id="content" name="content" value="">${bcontent}</textarea>
+			<td><textarea id="content" name="content" >${board.content}</textarea>
 			</td>	
 		</tr>
 				

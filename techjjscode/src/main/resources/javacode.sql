@@ -57,7 +57,7 @@ select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACOD
 select * from JAVACODE_BOARD;
 select distinct category from JAVACODE_BOARD order by category desc;
 
-
+select * from JAVACODE_BOARD2;
 
 
 commit;

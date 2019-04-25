@@ -21,27 +21,19 @@
 		
 		$('#search').on('click', search);
 		
-		if ('${type}' == 'title'){
-			$("#option option:eq(0)").attr("selected", "selected");
-		}
-		else if	('${type}' == 'titleContent'){
-			$("#option option:eq(1)").attr("selected", "selected");
-		}
-		else if	('${type}' == 'category'){
-			$("#option option:eq(2)").attr("selected", "selected");
-		}
-		else if	('${type}' == 'tag'){
-			$("#option option:eq(3)").attr("selected", "selected");
-		}
 		
-		
-		
-		
-		
-	});
-	
-	
-</script>
+		if ('${type}' == 'title') {
+				$("#option option:eq(0)").attr("selected", "selected");
+			} else if ('${type}' == 'titleContent') {
+				$("#option option:eq(1)").attr("selected", "selected");
+			} else if ('${type}' == 'category') {
+				$("#option option:eq(2)").attr("selected", "selected");
+			} else if ('${type}' == 'tag') {
+				$("#option option:eq(3)").attr("selected", "selected");
+			}
+
+		});
+	</script>
 	
 	<!-- ajax를 이용하여 글읽기 관련 처리 -->
 <script>

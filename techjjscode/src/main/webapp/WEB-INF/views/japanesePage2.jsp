@@ -13,13 +13,6 @@
 <script>
 	/*jquery */
 	$(document).ready(function() {
-		//버튼 누를시 이벤트
-		$('#search').on('click', search);
-		if ('${type}' == 'title') {
-			$("#option option:eq(0)").attr("selected", "selected");
-		} else if ('${type}' == 'titleContent') {
-			$("#option option:eq(1)").attr("selected", "selected");
-		}
 
 	});
 </script>
@@ -69,18 +62,6 @@
 	}
 </script>
 <script>
-	function search() {
-		var type = document.getElementById('option').value;
-		document.getElementById('type').value = type;
-	}
-	function formSubmit(p, type) {
-		var form = document.getElementById('pagingForm');
-		var page = document.getElementById('page');
-		document.getElementById('type').value = type;
-		page.value = p;
-		form.submit();
-	}
-
 	function delchk() {
 		return confirm("삭제하시겠습니까?");
 	}
@@ -110,101 +91,77 @@
 		<section id="main">
 			<div class="container">
 				<div class="row">
-					<div class="col-12 col-12-medium" style="border: 1px solid black;">
-						<h2>검색 결과 테이블</h2>
-						<table>
-							<tr>
-								<td><input type="button" value="글쓰기"
-									onclick="location.href = 'write2'">
-							</tr>
-							<tr>
-								<th>제목
-								<th>
-								<th>
-								<th>
-								<th>등록일
-								<th>첨부파일
-								<th>수정
-								<th>삭제
-							</tr>
-							<c:forEach var="board2" items="${list2}">
-								<tr>
-									<td>${board2.boardnum}<a
-										href="javascript:boardRead(${board2.boardnum});void(0);">
-											${board2.title}</a>
-									<td>
-									<td>
-									<td>
-									<td>${board2.updatedate }
-									<td align="center"><c:if
-											test="${board2.originalfile !=null}">
-											<a href="download?boardnum=${ board2.boardnum}">${board2.originalfile}</a>
-										</c:if>
-									<td><a href="./edit2?boardnum=${board2.boardnum}">수정</a>
-									<td>${board2.boardType}<td><a href="./delete2?boardnum=${board2.boardnum}"
-										onclick="return delchk();">삭제</a>
-								
-								</tr>
-							</c:forEach>
-						</table>
-						<!-- 페이징 영역 -->
-						<p align="center">
+					<div class="col-9 col-12-medium">
+						<div class="content">
 
-							<a
-								href="javascript:formSubmit('${navi.currentPage -1}','${type}')">◀</a>
-							<c:forEach var="n" begin="${ navi.startPageGroup}"
-								end="${navi.endPageGroup}">
-								<a href="javascript:formSubmit('${n}' , '${type}')">${n}
-							</a></c:forEach>
-									
-							<a
-								href="javascript:formSubmit('${navi.currentPage +1}','${type}')">▶</a>
+							<!-- Content -->
 
+							<article class="box page-content">
 
-							<!-- 게시판 검색  폼영역 -->
-						
-						<form action="list2" onsubmit="search()" method="get"
-							id="pagingForm">
-							<input type="hidden" name="type" id="type"> <input
-								type="hidden" name="page" id="page" value="1"> <br>
-							<p align="center">
+								<header>
+									<h2>검색 결과 테이블</h2>
+									<!-- 이하 게시판 글 목록 -->
+									<table>
+										<tr>
+											<td><input type="button" value="글쓰기"
+												onclick="location.href = 'write2'">
+										</tr>
+										<tr>
 
-								<select id="option">
-									<option value="title" id="title">title</option>
-									<option value="titleContent" id="titleContent">title+content</option>
-								</select> <input type="text" id="searchText" name="searchText"
-									value="${searchText}"> <input type="submit" value="검색">
-						
-						</form>
+											<th>제목
+											<th>
+											<th>
+											<th>
+											<th>등록일
+											<th>첨부파일
+											<th>수정
+											<th>삭제
+										</tr>
 
 
 
+										<c:forEach var="board2" items="${list2}">
+											<tr>
+
+
+												<td>${board2.boardnum}<a
+													href="javascript:boardRead(${board2.boardnum});void(0);">
+														${board2.title}</a>
+												<td>
+												<td>
+												<td>
+												<td>${board2.updatedate }
+												<td align="center"><c:if
+														test="${board2.originalfile !=null}">
+														<a href="download?boardnum=${ board2.boardnum}">${board2.originalfile}</a>
+													</c:if>
+												<td><a href="./edit2?boardnum=${board2.boardnum}">수정</a>
+												<td><a href="./delete2?boardnum=${board2.boardnum}"
+													onclick="return delchk();">삭제</a>
+											</tr>
+										</c:forEach>
+									</table>
+									<div id="boardTypeDiv" name="boardTypeDiv"></div>
+
+
+									<div id="titleDiv" name="titleDiv"></div>
+
+									<div id="ContentDiv" name="ContentDiv"
+										style="width: 160; height: 20; overflow-x: hidden; overflow-y: hidden"></div>
+
+
+
+								</header>
+
+
+
+							</article>
+
+						</div>
 					</div>
 
 
-
 				</div>
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-12 col-12-medium" style="border: 1px solid black;">
-
-
-						<!-- 이하 게시판 글 목록 -->
-						<div id="boardTypeDiv" name="boardTypeDiv"></div>
-						<div id="titleDiv" name="titleDiv"></div>
-						<div id="ContentDiv" name="ContentDiv"
-							style="width: 160; height: 20; overflow-x: hidden; overflow-y: hidden"></div>
-
-					</div>
-
-
-
-				</div>
-			</div>
-
-
-			<!-- </div>  -->
 		</section>
 
 		<!-- Footer -->

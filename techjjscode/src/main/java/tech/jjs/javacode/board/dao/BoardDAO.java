@@ -89,12 +89,18 @@ public class BoardDAO {
 		}
 		
 		//게시글 리스트
-		public ArrayList<Board2VO> list2() {
+		public ArrayList<Board2VO> list2(int startRecord ,int countPerPage ,String type,String searchText) {
 
 			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
-			ArrayList<Board2VO> list2 = mapper.list2();
+			//검색결과의 일부분만 읽기
+			RowBounds rb = new RowBounds(startRecord, countPerPage);
 			
-			return list2;
+			HashMap<String, Object> b = new HashMap<>();
+			b.put("type", type);
+			b.put("searchText",searchText );
+			ArrayList<Board2VO> list = mapper.list2(b,rb);
+			
+			return list;
 		}
 		
 		
@@ -111,6 +117,20 @@ public class BoardDAO {
 			
 			
 		}
+		//전체 글 수 가져오기
+		public int getTotal2(String type,String searchText){
+			
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			HashMap<String, Object> b = new HashMap<>();
+			b.put("type", type);
+			b.put("searchText",searchText );
+			int total = mapper.getTotal2(b);
+			
+			return total;
+			
+			
+		}
+		
 		//글삭제
 		public int delete(int s_boardNum) {
 

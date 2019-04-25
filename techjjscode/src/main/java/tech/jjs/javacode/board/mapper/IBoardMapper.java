@@ -22,10 +22,11 @@ public interface IBoardMapper {
 	//전체 게시글 가져오기
 	public ArrayList<BoardVO> list(HashMap<String, Object> b,RowBounds rb);
 	//japan전체 게시글 가져오기
-	public ArrayList<Board2VO> list2();
-	
+	public ArrayList<Board2VO> list2(HashMap<String, Object> b,RowBounds rb);
 	//전체 글 수
 	public int getTotal (HashMap<String, Object> b);
+	//전체 글 수
+	public int getTotal2 (HashMap<String, Object> b);
 	// 삭제
 	public int delete(int s_boardNum);
 	// 수정
