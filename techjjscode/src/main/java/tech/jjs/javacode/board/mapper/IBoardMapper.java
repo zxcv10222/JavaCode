@@ -29,6 +29,8 @@ public interface IBoardMapper {
 	public int getTotal2 (HashMap<String, Object> b);
 	// 삭제
 	public int delete(int s_boardNum);
+	// 삭제
+	public int delete2(int s_boardNum);
 	// 수정
 	public int edit(BoardVO board);
 	// 수정

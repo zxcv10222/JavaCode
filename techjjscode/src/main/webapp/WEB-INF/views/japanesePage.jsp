@@ -87,7 +87,7 @@
 </script>
 
 
-<input type="hidden" name="boardnum" value="${board.boardnum }">
+<input type="hidden" name="boardnum" value="${board2.boardnum }">
 
 
 
@@ -111,38 +111,43 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-12 col-12-medium" style="border: 1px solid black;">
-						<h2>검색 결과 테이블</h2>
+						<h2>table</h2>
 						<table>
 							<tr>
-								<td><input type="button" value="글쓰기"
+								<td><input type="button" value="write"
 									onclick="location.href = 'write2'">
 							</tr>
 							<tr>
-								<th>제목
-								<th>
-								<th>
-								<th>
-								<th>등록일
-								<th>첨부파일
-								<th>수정
-								<th>삭제
+								
+								<td>type &nbsp&nbsp
+								title
+								
+								<td>updatedate
+								<td>file
+								<td>edit
+								<td>delete
+							
+								
 							</tr>
 							<c:forEach var="board2" items="${list2}">
 								<tr>
-									<td>${board2.boardnum}<a
+									
+									<td>${board2.boardType} &nbsp&nbsp
+									
+									<a
 										href="javascript:boardRead(${board2.boardnum});void(0);">
 											${board2.title}</a>
-									<td>
-									<td>
-									<td>
+								
 									<td>${board2.updatedate }
+									
+								
 									<td align="center"><c:if
 											test="${board2.originalfile !=null}">
 											<a href="download?boardnum=${ board2.boardnum}">${board2.originalfile}</a>
 										</c:if>
-									<td><a href="./edit2?boardnum=${board2.boardnum}">수정</a>
-									<td>${board2.boardType}<td><a href="./delete2?boardnum=${board2.boardnum}"
-										onclick="return delchk();">삭제</a>
+									<td><a href="./edit2?boardnum=${board2.boardnum}">edit</a>
+									<td><a href="./delete2?boardnum=${board2.boardnum}"
+										onclick="return delchk();">delete</a>
 								
 								</tr>
 							</c:forEach>

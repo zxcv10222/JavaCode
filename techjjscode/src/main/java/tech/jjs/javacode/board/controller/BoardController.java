@@ -434,7 +434,63 @@ public class BoardController {
 		// 글목록 보기로 리다이렉트
 		return "redirect:list";
 	}
+	/**
+	 * 글 삭제
+	 */
+	@RequestMapping(value = "delete2", method = RequestMethod.GET)
+	public String delete2(int boardnum, HttpSession hs, RedirectAttributes rttr, HttpServletRequest request) {
 
+		String id = (String) hs.getAttribute("id");
+		// 관리자권한만 등록 가능
+		if (!id.equals("zxcv1012")) {
+
+			return "redirect:home";
+		}
+
+		Board2VO board = dao.read2(boardnum);
+
+		String savedFile = board.getSavedfile();
+		String fullpath = uploadPath + "/" + savedFile;
+
+		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
+
+		String content = board.getContent();
+		logger.debug("content:{}", content);
+
+		try {
+
+			Pattern ptn = Pattern.compile("//(.*?)png|//(.*?)jpg", Pattern.DOTALL);
+
+			Matcher matcher = ptn.matcher(content);
+
+			while (matcher.find()) {
+
+				String imageFileName = matcher.group(0).replaceAll("//", "");
+
+				File f2 = new File(realFolder + "\\" + imageFileName);
+				// 해당 글에 첨부된 파일이 있으면 삭제
+				if (f2.exists()) {
+					FileService.deleteFile(realFolder + "\\" + imageFileName);
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		File f = new File(fullpath);
+		// 해당 글에 첨부된 파일이 있으면 삭제
+		if (f.exists()) {
+			FileService.deleteFile(fullpath);
+		}
+
+		// 글번호 로그인 아이디를 전달해서 DB에서 글 삭제
+
+		int result = dao.delete2(boardnum);
+		// 글목록 보기로 리다이렉트
+		return "redirect:list2";
+	}
 	/**
 	 * 글 수정 폼
 	 */

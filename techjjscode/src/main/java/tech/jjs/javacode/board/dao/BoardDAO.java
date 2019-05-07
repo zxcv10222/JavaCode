@@ -138,6 +138,13 @@ public class BoardDAO {
 			int result = mapper.delete(s_boardNum);
 			return result;
 		}
+		//글삭제
+		public int delete2(int s_boardNum) {
+
+			IBoardMapper mapper = sqlSession.getMapper(IBoardMapper.class);
+			int result = mapper.delete2(s_boardNum);
+			return result;
+		}
 		//글수정
 		public int edit(BoardVO board) {
 
