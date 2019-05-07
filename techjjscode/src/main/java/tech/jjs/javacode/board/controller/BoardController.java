@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -545,28 +546,10 @@ public class BoardController {
 		PrintWriter out = response.getWriter();
 		// 업로드할 폴더 경로
 		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
-		// UUID uuid = UUID.randomUUID();
 
-		// 업로드할 파일 이름
-		String org_filename = file.getOriginalFilename();
-		// String str_filename = uuid.toString() + org_filename;
 		String savedfile = FileService.saveFile(file, realFolder);
-
-		// System.out.println("원본 파일명 : " + org_filename);
-		// System.out.println("저장할 파일명 : " + str_filename);
-
-		// String filepath = realFolder + "\\" + str_filename;
-		// System.out.println("파일경로 : " + filepath);
-
-		// File f = new File(filepath);
-		// if (!f.exists()) {
-		// f.mkdirs();
-		// }
-		// file.transferTo(f);
-		// out.println("profileUpload//"+str_filename);
-
-		out.println("profileUpload//" + savedfile);
-
+		
+		out.print("profileUpload//" + savedfile);
 		out.close();
 
 	}

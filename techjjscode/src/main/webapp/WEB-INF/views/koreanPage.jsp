@@ -8,7 +8,7 @@
 <html>
 	<head>
 	
-	<script src="./resources/ckeditor/ckeditor.js"></script>
+
 	<script src="./resources/js/jquery-3.1.1.min.js"></script>
 	<script>
 	

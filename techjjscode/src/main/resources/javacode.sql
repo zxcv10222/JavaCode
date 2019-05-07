@@ -50,6 +50,7 @@ CREATE TABLE JAVACODE_BOARD2
 );
 
 
+insert into JAVACODE_BOARD values(1,'test','test','test','','',sysdate,'network');
 
 
 select boardnum ,title ,to_char(updatedate,'yyyy-mm-dd') updatedate from JAVACODE_BOARD order by boardnum desc;
