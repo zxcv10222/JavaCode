@@ -10,8 +10,18 @@
 	
 
 	<script src="./resources/js/jquery-3.1.1.min.js"></script>
-	<script>
 	
+	 <!-- include libraries BS3 -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+    <!-- include google-code-prettify -->
+
+    <link rel="stylesheet" href="//rawgit.com/google/code-prettify/master/src/prettify.css"/>
+    <script type="text/javascript" src="//rawgit.com/google/code-prettify/master/src/prettify.js"></script>
+	
+	<script>
 	
 	/*jquery */
 	$(document).ready(function() {
@@ -81,7 +91,7 @@ function output(ob) {
 	$('#ContentDiv').html(str2);
 	$('#categoryAndTagDiv').html(str3);
 	
-	
+	hljs.initHighlightingOnLoad();
 }
 
 

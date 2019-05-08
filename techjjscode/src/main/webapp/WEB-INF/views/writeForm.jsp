@@ -15,16 +15,33 @@
 	<script src="./resources/js/jquery-ui.min.js"></script>
 	
 	<!--SumemerNote  -->
-	  <link href="./resources/summernote/summernote-lite.css" rel="stylesheet">
-	  <script src="./resources/summernote/summernote-lite.js"></script>
-	  
+	<link href="./resources/summernote/summernote-lite.css" rel="stylesheet">
+	<script src="./resources/summernote/summernote-lite.js"></script>
+	<script src="./resources/summernote/summernote-ext-highlight.min.js"></script> 
+	
+	 <!-- include libraries BS3 -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
 
-  
+    <!-- include google-code-prettify -->
+
+    <link rel="stylesheet" href="//rawgit.com/google/code-prettify/master/src/prettify.css"/>
+    <script type="text/javascript" src="//rawgit.com/google/code-prettify/master/src/prettify.js"></script>
 
 
 
 <script>
 $(document).ready(function() {
+	$('#boardTypeSelect').on('change',selectChange);
+	
+	
+    $('.preview-btn').click(function () {
+        $('#preview-box').html($('#content').summernote('code'));
+      
+        prettyPrint();
+     
+    });
 	
 });
 	$(function(){
@@ -35,6 +52,27 @@ $(document).ready(function() {
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus: true,
 			disableDragAndDrop:true,
+			toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['fontname']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['highlight', ['highlight']],
+			    ['table', ['table']],
+			    ['picture', ['picture']],
+			    ['link', ['link']],
+			    ['video', ['video']],
+			    ['fullscreen', ['fullscreen']],
+			    ['codeview', ['codeview']],
+			    ['undo', ['undo']],
+			    ['redo', ['redo']],
+			    ['help', ['help']]
+			    
+			  ],
+			
 			callbacks: {
 				onImageUpload: function(files, editor, welEditable) {
 		            for (var i = files.length - 1; i >= 0; i--) {
@@ -59,7 +97,7 @@ $(document).ready(function() {
         	enctype: 'multipart/form-data',
         	processData: false,
         	success: function(url) {
- 				alert(url);
+
                 $(el).summernote('editor.insertImage', url);
                 
                 
@@ -104,54 +142,8 @@ $(function(){
     });
 })
 
-//테이블 내용 조회
-		$.ajax({
-			url : './autocomplete',
-			type : 'POST',
-			dataType : 'json',
-			success : output,
-			error : function(e) {
-			}
-		});
-	//category
-	function output(hm) {
 
-		var ob = hm.categorys;
-		var editcategory=$('#category').val();
-		var flag = $('#edit').val();
-		//테이블
-		var str = '<select id="categorySelect">';
-		
-		if (flag==""){
-			str += '<option value="" selected>'
-		}else{
-			str += '<option value="">'
-		}
-			
-		
-		for (var i = 0; i < ob.length; i++) {
-			
-			if(editcategory==ob[i]) {
-				str += '<option value="'+ob[i]+'" selected>'	
-				+ ob[i]
-				+ '</option>'
-			}else{
-				str += '<option value="'+ob[i]+'">'
-				+ ob[i]
-				+ '</option>'
-			}		
-		}
-		str += '</select> ';
-		$('#categorydiv').html(str);
-		
-		$('#categorySelect').on('change',selectChange);
-	}
 	
-	function selectChange(){
-		//alert($('#category').val());
-		$('#category').val($('#categorySelect').val());
-		//alert($('#category').val());
-	}
 
 	
 	
@@ -257,7 +249,11 @@ $(function(){
             });
           }
 	
-	
+	function selectChange(){
+		//alert($('#category').val());
+		$('#category').val($('#boardTypeSelect').val());
+		//alert($('#boardType').val());
+	}
 	
 </script>
 	
@@ -280,32 +276,7 @@ $(function(){
 				</header>
 
 
-			<!-- Nav -->
-				<nav id="nav">
-					<ul>
-						<li><a href="./home">Home</a></li>
-						<li>
-							<a href="#">Dropdown</a>
-							<ul>
-								<li><a href="#">Lorem ipsum dolor</a></li>
-								<li><a href="#">Magna phasellus</a></li>
-								<li>
-									<a href="#">Phasellus consequat</a>
-									<ul>
-										<li><a href="#">Lorem ipsum dolor</a></li>
-										<li><a href="#">Phasellus consequat</a></li>
-										<li><a href="#">Magna phasellus</a></li>
-										<li><a href="#">Etiam dolore nisl</a></li>
-									</ul>
-								</li>
-								<li><a href="#">Veroeros feugiat</a></li>
-							</ul>
-						</li>
-						<li><a href="./left-sidebar">Left Sidebar</a></li>
-						<li><a href="./right-sidebar">Right Sidebar</a></li>
-						<li class="current"><a href="./no-sidebar">No Sidebar</a></li>
-					</ul>
-				</nav>
+			
 
 			<!-- Main -->
 				<section id="main">
@@ -336,10 +307,20 @@ $(function(){
 		<tr>
 			
 			<th>category 
-			<td><div id="categorydiv"></div>
 			<input type="hidden" id="category" name="category"  value="${board.category}">
-			<%-- <td><input type="text" id="category" name="category"  value="${board.category}">
- --%>				
+			<td><select id="boardTypeSelect">
+				 <option ></option>
+				 <option value="네트워크">네트워크</option>
+				 <option value="서버">서버</option>
+				 <option value="개발">개발</option>
+			 </td></select>
+			
+			<c:if test="${edit eq 'edit'}">
+				<script>
+					$('#boardTypeSelect').val($('#category').val());
+				</script>
+			</c:if>	
+			
 		</tr>
 		<tr>
 			<th>태그
@@ -356,14 +337,18 @@ $(function(){
 		</tr>
 		<tr>
 			<th>내용
-			<td><textarea id="content" name="content" >${board.content}</textarea>
-			</td>	
+			<td><textarea id="content" name="content" >${board.content}</textarea></td>	
+			
 		</tr>
-				
+	
 			</table>
+			
 			<p align="center"><input type="submit" value="저장" onclick="return checkform();">
 			<input type="button" value="뒤로가기" onclick="location.href = './list'">
+			
+			
 </form>	
+		<button class="btn btn-success preview-btn">Preview</button>
 			
 								</div>
 							</div>

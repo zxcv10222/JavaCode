@@ -17,7 +17,17 @@
 	<!--SumemerNote  -->
 	  <link href="./resources/summernote/summernote-lite.css" rel="stylesheet">
 	  <script src="./resources/summernote/summernote-lite.js"></script>
-	  
+	 <script src="./resources/summernote/summernote-ext-highlight.min.js"></script> 
+	
+	 <!-- include libraries BS3 -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+    <!-- include google-code-prettify -->
+
+    <link rel="stylesheet" href="//rawgit.com/google/code-prettify/master/src/prettify.css"/>
+    <script type="text/javascript" src="//rawgit.com/google/code-prettify/master/src/prettify.js"></script> 
 
   
 
@@ -27,7 +37,12 @@
 $(document).ready(function() {
 	$('#boardTypeSelect').on('change',selectChange);
 	
-	
+    $('.preview-btn').click(function () {
+        $('#preview-box').html($('#content').summernote('code'));
+      
+        prettyPrint();
+     
+    });
 });
 	$(function(){
 		
@@ -37,6 +52,26 @@ $(document).ready(function() {
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus: true,
 			disableDragAndDrop:true,
+			toolbar: [
+			    // [groupName, [list of button]]
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['fontname']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['highlight', ['highlight']],
+			    ['table', ['table']],
+			    ['picture', ['picture']],
+			    ['link', ['link']],
+			    ['video', ['video']],
+			    ['fullscreen', ['fullscreen']],
+			    ['codeview', ['codeview']],
+			    ['undo', ['undo']],
+			    ['redo', ['redo']],
+			    ['help', ['help']]
+			    
+			  ],
 			callbacks: {
 				onImageUpload: function(files, editor, welEditable) {
 		            for (var i = files.length - 1; i >= 0; i--) {
@@ -301,6 +336,7 @@ $(document).ready(function() {
 			<p align="center"><input type="submit" value="save" onclick="return checkform();">
 			<input type="button" value="back" onclick="location.href = './list2'">
 </form>	
+<button class="btn btn-success preview-btn">Preview</button>
 			
 								</div>
 							</div>
